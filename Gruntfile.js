@@ -64,16 +64,6 @@ module.exports = function (grunt) {
 
                     ]
                 }
-            },
-            uncss: {
-                dist: {
-                    options: {
-                        ignore: ['.as-sortable-item-handle svg']
-                    },
-                    files: {
-                        'demo/css/tidy.css': ['demo/editor.html']
-                    }
-                }
             }
         });
     grunt.loadNpmTasks('grunt-uncss');
