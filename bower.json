@@ -24,6 +24,8 @@
     "tests",
     "demo",
     "src",
-    "dist/ts-embed.js"
+    "dist/ts-embed.js",
+    "Gruntfile.js",
+    "package.json"
   ]
 }
