@@ -1,5 +1,5 @@
 # ts-embed
-**ts-embed** is a set of code & tools to create compacted assets libraries (audio, video, text). It takes some inspiration from the as3 flex [Embed(source="file.png")] syntax.
+**ts-embed** is a set of Typescript code & tools to create compacted assets libraries (audio, video, text). It takes some inspiration from the as3 flex [Embed(source="file.png")] syntax.
 
 The advantage of embedding assets is that are included in a single **.tse** file, and can be accessed faster than it the application has to load one to one every asset.
 
