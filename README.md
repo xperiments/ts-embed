@@ -135,7 +135,7 @@ You can optionally specify a MIME type for the imported asset by using the mimeT
 Currentlly supported MIME types:
 
 app|audio|image|text|video
--|-|-|-|-
+---|---|---|---|---
 application/typescript		|audio/L24		|image/gif		|text/css			|video/avi
 application/ecmascript		|audio/mp4		|image/jpeg		|text/csv			|video/mpeg
 application/json			|audio/mpeg		|image/pjpeg	|text/html			|video/mp4
