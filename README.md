@@ -5,38 +5,75 @@
 
 The advantage of embedding assets is that are included in a single **.tse** file, and can be accessed faster than it the application has to load one to one every asset.
 
-## Basic Syntax ##
+## Basic usage ##
+
+To embed assets into our classes, annotate the target properties with the @embed decorator syntax.
 ~~~typescript 
-class SomeClass {
-	
+class EmbedTestClass {
+
+	//helloWorld.txt contents is "HELLO WORLD"
+    
 	@embed({src:'./resources/helloWorld.txt'});
-	someProperty:string;
+	helloWorldContents:string;
 
 }
 ~~~
 
+This will assign the contents of the included asset into the class property prototype.
+~~~typescript 
+var embedTest = new EmbedTestClass();
+console.log(embedTest.helloWorldContents ); // prints "HELLO WORLD";
+console.log(EmbedTestClass.prototype.helloWorldContents ); // prints "HELLO WORLD";
+
+~~~
+
 ## Embed parameters ##
 
-The following table describes the parameters that are available for any type of embedded asset.
+The following table describes the parameters that are available for the embed decorator.
 
 
 param  | required | description
 ----------| ---- | -------------
 **src**	| true | Specifies the path of the asset to embed with a path relative to the file containing the @embed statement.
 **as**		| false | Specifies the [Extractor](#extractor) function to use to recreate the property. 
-**mime**	| false | Specifies the mime type of the asset. [Supported MIME types](#supported-MIME-types)
 **symbol**| false | A unique identifier name used to retrieve an embed asset at runtime.
-## Basic Usage ##
+**mime**	| false | Specifies the mime type of the asset. [Supported MIME types](#supported-MIME-types)
 
-Embed an asset in your code:
+
+## @embed({src}) ##
+Specifies the path of the asset to embed with a path relative to the file containing the @embed statement.
+
+## @embed({as}) ##
+
+By default embed assets gets extracted to its basic representation ( string | Uint8Array ).
+
+Specifying the **as** parameter let us provide a function that will transform this data before it is asigned to the property.
+
+The embed library itself contains this extractors you can use:
+
+* Embed.**HTMLImageElement**
+* Embed.**HTMLScriptElement**
+* Embed.**HTMLStyleElement**
+* Embed.**HTMLSourceElement**
+
+
 
 ~~~typescript 
-class EmbedTest {
-	
-	@embed({src:'./resources/helloWorld.txt'});
-	helloWorldProperty:string;
+class EmbedTestClass {
 
+	@embed({src:'./resources/image.png'});
+	uint8Image:Uint8Array;
+    
+	@embed({src:'./resources/image.png', as:Embed.HTMLImageElement});
+	image:HTMLImageElement;
 }
+~~~
+
+~~~typescript 
+var embedTest = new EmbedTestClass();
+console.log( typeof embedTest.uint8Image ); // prints "Uint8Array";
+console.log( typeof embedTest.image ); // prints "HTMLImageElement";
+
 ~~~
 
 Compile and run the grunt-ts-embed task to generate the **.tse** file.
@@ -80,20 +117,7 @@ Load the library with the loader:
 </script>
 ~~~
 
-
-
-
-## Extractor ##
-~~~typescript 
-class EmbedTest {
-	
-	@embed({ src:'./resources/logo.png', as:Embed.HTMLImageElement });
-	logoImage:HTMLImageElement;
-
-}
-~~~
-
-## Retrieve an embed asset at Runtime ##
+## @embed({symbol}) ##
 ~~~typescript 
 class EmbedTest {
 	
@@ -103,56 +127,21 @@ class EmbedTest {
 }
 ~~~
 
-## Custom Extractors ##
-~~~typescript 
-class EmbedTest {
-	
-	@embed({ src:'./resources/logo.png', as:Embed.HTMLImageElement });
-	logoImage:HTMLImageElement;
 
-}
-~~~
-## Supported MIME types ##
+## @embed({mime}) ##
 
 You can optionally specify a MIME type for the imported asset by using the mimeType parameter. If you do not specify a mimeType parameter, ts-embed makes a best guess about the type of the imported file based on the file extension. If you do specify it, the mimeType parameter overrides the default guess of the asset type.
 
 Currentlly supported MIME types:
 
-* audio/L24
-* audio/mp4
-* audio/mpeg
-* audio/ogg
-* audio/opus
-* audio/vorbis
-* audio/vnd.wave
-* audio/webm
-* image/gif
-* image/jpeg
-* image/pjpeg
-* image/png
-* image/bmp
-* image/svg+xml
-* image/tiff
-* text/css
-* text/csv
-* text/html
-* text/javascript
-* text/plain
-* text/rtf
-* text/vcard
-* text/xml
-* video/avi
-* video/mpeg
-* video/mp4
-* video/ogg
-* video/quicktime
-* video/webm
-* application/typescript
-* application/ecmascript
-* application/json
-* application/javascript
-* application/octet-stream
-* application/pdf
-* application/xml
-* application/zip
-* application/gzip
+app|audio|image|text|video
+-|-|-|-|-
+application/typescript		|audio/L24		|image/gif		|text/css			|video/avi
+application/ecmascript		|audio/mp4		|image/jpeg		|text/csv			|video/mpeg
+application/json			|audio/mpeg		|image/pjpeg	|text/html			|video/mp4
+application/javascript		|audio/ogg		|image/png		|text/javascript	|video/ogg
+application/octet-stream	|audio/opus		|image/bmp		|text/plain			|video/quicktime
+application/pdf				|audio/vorbis	|image/svg+xml	|text/rtf			|video/webm
+application/xml				|audio/vnd.wave	|image/tiff		|text/vcard			|
+application/zip				|audio/webm		|				|text/xml			|
+application/gzip			|				|				|					|
