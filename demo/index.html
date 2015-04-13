@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/ts-embed.min.js"></script>
+    <script src="src/EmbedSampleClass.js"></script>
+</head>
+<body>
+<script>
+    var loader = new xp.EmbedLoader();
+    loader.load('bin/embedOutput.tse').then(function(a){
+        new EmbedSampleClass();
+    });
+</script>
+</body>
+</html>

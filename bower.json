@@ -1,0 +1,29 @@
+{
+  "name": "ts-embed",
+  "version": "0.0.1",
+  "homepage": "https://github.com/xperiments/ts-embed",
+  "authors": [
+    "Pedro Casaubon <xperiments@gmail.com>"
+  ],
+  "description": "ts-embed is a set of code & tools to create compacted assets libraries (audio, video, text).",
+  "main": "dist/ts-embed.min.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "typescript",
+    "embed",
+    "assets"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "demo",
+    "src",
+    "dist/ts-embed.js"
+  ]
+}
