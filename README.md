@@ -51,16 +51,16 @@ The following table describes the parameters that are available for the embed de
 
 param  | required | description
 ----------| ---- | -------------
-**src**	| true | Specifies the path of the asset to embed, relative to the file containing the @embed statement.
-**as**		| false | Specifies the [Extractor](#extractor) function to use to recreate the property. 
-**symbol**| false | A unique identifier name used to retrieve an embed asset at runtime.
-**mime**	| false | Specifies the mime type of the asset. [Supported MIME types](#supported-MIME-types)
+**[src](#@embed{src})**	| true | Specifies the path of the asset to embed, relative to the file containing the @embed statement.
+**[as](#@embed{as})** | false | Specifies the Extractor function to use to recreate the property.
+**[symbol](#@embed{symbol})** | false | A unique identifier name used to retrieve an embed asset at runtime.
+**[mime](#@embed{mime})**	| false | Specifies the mime type of the asset. [Supported MIME types](#embed-mime)
 
-
-### @embed({src}) ###
+1
+### @embed{src} ###
 Specifies the path of the asset to embed with a path relative to the file containing the @embed statement.
 
-### @embed({as}) ###
+### @embed{as} ###
 
 By default embedded assets are extracted to its basic representation ( string | Uint8Array ).
 
@@ -93,7 +93,7 @@ console.log( typeof embedTest.image ); // prints "HTMLImageElement";
 
 ~~~
 
-### @embed({as:custom}) ##
+###  @embed{custom} ##
 
 We can also provide custom **as** functions that implements the IEmbedExtractor interface.
 
@@ -129,7 +129,7 @@ class EmbedSoundClass {
 }
 ~~~
 
-### @embed({symbol}) ###
+### @embed{symbol} ###
 
 The symbol parameter lets us specify a unique asset name to be able to access it at runtime.
 ~~~typescript 
@@ -149,7 +149,7 @@ var logoImage = EmbedUtils.getSymbolAs('logo', Embed.HTMLImageElement);
 ~~~
 
 
-### @embed({mime}) ###
+### @embed{mime} ###
 
 You can optionally specify a MIME type for the imported asset by using the mimeType parameter. If you do not specify a mimeType parameter, ts-embed makes a best guess about the type of the imported file based on the file extension.
 
