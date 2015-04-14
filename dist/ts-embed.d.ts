@@ -20,6 +20,7 @@ declare module xp {
         format?: xp.EmbedType;
         as?: IEmbedExtractor;
         symbol?: string;
+        mime?: string;
         path?: string;
     }
     interface IEmbedExtractor {
@@ -31,6 +32,7 @@ declare module xp {
         propertyName: string;
         done?: boolean;
     }
+    function embed(embedParams: xp.IEmbedMeta): PropertyDecorator;
     class EmbedLoader {
         url: string;
         private _xhr;
@@ -46,10 +48,11 @@ declare module xp {
         dispatchEvent(evt: Event): boolean;
     }
     module Embed {
-        function HTMLImageElement(file: IEmbedFile): HTMLImageElement;
-        function HTMLScriptElement(file: IEmbedFile): HTMLScriptElement;
-        function HTMLStyleElement(file: IEmbedFile): HTMLStyleElement;
-        function HTMLSourceElement(file: IEmbedFile): HTMLSourceElement;
+        function image(file: IEmbedFile): HTMLImageElement;
+        function script(file: IEmbedFile): HTMLScriptElement;
+        function $script(file: IEmbedFile): HTMLScriptElement;
+        function style(file: IEmbedFile): HTMLStyleElement;
+        function source(file: IEmbedFile): HTMLSourceElement;
     }
     class EmbedUtils {
         static revokeURL(target: any): any;
@@ -75,5 +78,4 @@ declare module xp {
         protected static unpack(key: string, data: ArrayBuffer, diskMapObject: EmbedDisk): void;
         protected static PJWHash(str: string): number;
     }
-    function embed(embedParams: xp.IEmbedMeta): PropertyDecorator;
 }

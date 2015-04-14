@@ -10,6 +10,12 @@ var xp;
         EmbedType[EmbedType["utf8"] = 1] = "utf8";
     })(xp.EmbedType || (xp.EmbedType = {}));
     var EmbedType = xp.EmbedType;
+    function embed(embedParams) {
+        return function (proto, propertyName) {
+            xp.EmbedUtils.process(embedParams, proto, propertyName);
+        };
+    }
+    xp.embed = embed;
     var EmbedLoader = (function () {
         function EmbedLoader() {
             this._xhr = new XMLHttpRequest();
@@ -64,32 +70,39 @@ var xp;
     xp.EmbedLoader = EmbedLoader;
     var Embed;
     (function (Embed) {
-        function HTMLImageElement(file) {
+        function image(file) {
             var img = document.createElement('img');
             img.src = EmbedUtils.getURLFrom(file);
             return img;
         }
-        Embed.HTMLImageElement = HTMLImageElement;
-        function HTMLScriptElement(file) {
+        Embed.image = image;
+        function script(file) {
             var script = document.createElement('script');
             script.src = EmbedUtils.getURLFrom(file);
             return script;
         }
-        Embed.HTMLScriptElement = HTMLScriptElement;
-        function HTMLStyleElement(file) {
+        Embed.script = script;
+        function $script(file) {
+            console.log('aaaa', file);
+            var script = Embed.script(file);
+            document.body.appendChild(script);
+            return script;
+        }
+        Embed.$script = $script;
+        function style(file) {
             var s = document.createElement('style');
             s.type = 'text/css';
             s.appendChild(document.createTextNode(file.content));
             return s;
         }
-        Embed.HTMLStyleElement = HTMLStyleElement;
-        function HTMLSourceElement(file) {
+        Embed.style = style;
+        function source(file) {
             var source = document.createElement("source");
             source.type = file.mime;
             source.src = EmbedUtils.getURLFrom(file);
             return source;
         }
-        Embed.HTMLSourceElement = HTMLSourceElement;
+        Embed.source = source;
     })(Embed = xp.Embed || (xp.Embed = {}));
     var EmbedUtils = (function () {
         function EmbedUtils() {
@@ -112,8 +125,11 @@ var xp;
             var blobContent = file.content;
             var blobResult;
             var BBN = "BlobBuilder";
+            console.log(file.mime, typeof blobContent);
             try {
-                blobResult = new Blob(blobContent instanceof String ? blobContent : [blobContent.buffer], { type: file.mime });
+                blobResult = new Blob([
+                    typeof blobContent === "string" ? blobContent : [blobContent.buffer]
+                ]);
                 return blobResult;
             }
             catch (e) {
@@ -170,6 +186,7 @@ var xp;
                 return decParam.done == false;
             }).forEach(function (decParam) {
                 var file = EmbedUtils.getFile(decParam.params.src);
+                console.log(decParam.params.src);
                 decParam.proto[decParam.propertyName] = decParam.params.as ?
                     EmbedUtils.revokeURL(decParam.params.as(file)) : file.content;
                 decParam.done = true;
@@ -281,12 +298,6 @@ var xp;
         return EmbedUtils;
     })();
     xp.EmbedUtils = EmbedUtils;
-    function embed(embedParams) {
-        return function (proto, propertyName) {
-            xp.EmbedUtils.process(embedParams, proto, propertyName);
-        };
-    }
-    xp.embed = embed;
     var supportsBlob = ("URL" in window || "webkitURL" in window) && ("Blob" in window || "BlobBuilder" in window || "WebKitBlobBuilder" in window || "MozBlobBuilder" in window);
     var URL = window['URL'] || window['webkitURL'];
 })(xp || (xp = {}));

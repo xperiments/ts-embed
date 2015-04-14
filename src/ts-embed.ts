@@ -38,6 +38,7 @@ module xp {
 		format?:xp.EmbedType;
 		as?:IEmbedExtractor;
 		symbol?:string;
+		mime?:string;
 		path?:string; /*node only*/
 	}
 
@@ -52,6 +53,18 @@ module xp {
 		proto:any;
 		propertyName:string;
 		done?:boolean;
+	}
+
+	/**
+	 *
+	 * @param embedParams
+	 * @returns {function(any, string): void}
+	 */
+
+	export function embed( embedParams:xp.IEmbedMeta ):PropertyDecorator {
+		return function ( proto:any, propertyName:string ):void {
+			xp.EmbedUtils.process(embedParams, proto, propertyName);
+		}
 	}
 
 	export class EmbedLoader {
@@ -128,7 +141,7 @@ module xp {
 		 * @returns {*}
 		 * @constructor
 		 */
-		export function HTMLImageElement( file:IEmbedFile ):HTMLImageElement {
+		export function image( file:IEmbedFile ):HTMLImageElement {
 
 			var img = document.createElement('img');
 			img.src = EmbedUtils.getURLFrom(file);
@@ -141,20 +154,32 @@ module xp {
 		 * @returns {*}
 		 * @constructor
 		 */
-		export function HTMLScriptElement( file:IEmbedFile ):HTMLScriptElement {
+		export function script( file:IEmbedFile ):HTMLScriptElement {
 
 			var script = document.createElement('script');
 			script.src = EmbedUtils.getURLFrom(file);
 			return script;
 		}
-
 		/**
 		 *
 		 * @param params
 		 * @returns {*}
 		 * @constructor
 		 */
-		export function HTMLStyleElement( file:IEmbedFile ):HTMLStyleElement {
+		export function $script( file:IEmbedFile ):HTMLScriptElement {
+
+			console.log('aaaa',file)
+			var script = Embed.script( file );
+			document.body.appendChild(script);
+			return script;
+		}
+		/**
+		 *
+		 * @param params
+		 * @returns {*}
+		 * @constructor
+		 */
+		export function style( file:IEmbedFile ):HTMLStyleElement {
 
 			var s = document.createElement('style');
 			s.type = 'text/css';
@@ -169,7 +194,7 @@ module xp {
 		 * @returns {HTMLSourceElement}
 		 * @constructor
 		 */
-		export function HTMLSourceElement( file:IEmbedFile ):HTMLSourceElement {
+		export function source( file:IEmbedFile ):HTMLSourceElement {
 
 			var source = <HTMLSourceElement>document.createElement("source");
 			source.type = file.mime;
@@ -216,11 +241,11 @@ module xp {
 			var blobContent:any = file.content;
 			var blobResult:any;
 			var BBN = "BlobBuilder";
+			console.log( file.mime , typeof blobContent)
 			try {
-				blobResult = new Blob(
-					blobContent instanceof String ? blobContent : [<Uint8Array>blobContent.buffer],
-					{type: file.mime}
-				);
+				blobResult = new Blob([
+					typeof blobContent === "string" ? blobContent : [<Uint8Array>blobContent.buffer]
+				]);
 				return blobResult;
 			}
 			catch (e) {
@@ -314,6 +339,7 @@ module xp {
 				return decParam.done == false;
 			}).forEach(( decParam:IEmbedDecorator )=> {
 				var file:IEmbedFile = EmbedUtils.getFile(decParam.params.src);
+				console.log( decParam.params.src )
 				decParam.proto[decParam.propertyName] = decParam.params.as ?
 					EmbedUtils.revokeURL(decParam.params.as(file)) : file.content;
 				decParam.done = true;
@@ -496,18 +522,6 @@ module xp {
 			return hash;
 		}
 
-	}
-
-	/**
-	 *
-	 * @param embedParams
-	 * @returns {function(any, string): void}
-	 */
-
-	export function embed( embedParams:xp.IEmbedMeta ):PropertyDecorator {
-		return function ( proto:any, propertyName:string ):void {
-			xp.EmbedUtils.process(embedParams, proto, propertyName);
-		}
 	}
 
 	/* INTERNAL */
