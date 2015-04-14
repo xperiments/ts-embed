@@ -1,7 +1,7 @@
 # ts-embed
 **ts-embed** is a set of Typescript code & tools to create compacted assets libraries (audio, video, text). It takes some inspiration from the as3 flex [Embed(source="file.png")] syntax.
 
-The advantage of embedding assets is that are included in a single **.tse** file, and can be accessed faster than if the application has to load one to one every asset.
+The advantage of embedding assets is that are included in a single **.tse** file, and can be accessed faster than if the application has to load every asset individually.
 
 ## Table of contents ##
 
@@ -51,7 +51,7 @@ The following table describes the parameters that are available for the embed de
 
 param  | required | description
 ----------| ---- | -------------
-**src**	| true | Specifies the path of the asset to embed with a path relative to the file containing the @embed statement.
+**src**	| true | Specifies the path of the asset to embed, relative to the file containing the @embed statement.
 **as**		| false | Specifies the [Extractor](#extractor) function to use to recreate the property. 
 **symbol**| false | A unique identifier name used to retrieve an embed asset at runtime.
 **mime**	| false | Specifies the mime type of the asset. [Supported MIME types](#supported-MIME-types)
@@ -62,7 +62,7 @@ Specifies the path of the asset to embed with a path relative to the file contai
 
 ### @embed({as}) ###
 
-By default embed assets gets extracted to its basic representation ( string | Uint8Array ).
+By default embedded assets are extracted to its basic representation ( string | Uint8Array ).
 
 Specifying the **as** parameter let us provide a function (IEmbedExtractor) that will transform this data before it is assigned to the property.
 
@@ -140,7 +140,7 @@ class EmbedTest {
 
 }
 ~~~
-Latter in out code we can access it with the method:
+Latter in our code we can access it with the method:
 
 	EmbedUtils.getSymbolAs( symbol:string, as:IEmbedExtractor ):IEmbedFile
 
@@ -151,7 +151,7 @@ var logoImage = EmbedUtils.getSymbolAs('logo', Embed.HTMLImageElement);
 
 ### @embed({mime}) ###
 
-You can optionally specify a MIME type for the imported asset by using the mimeType parameter. If you do not specify a mimeType parameter, ts-embed makes a best guess about the type of the imported file based on the file extension. If you do specify it, the mimeType parameter overrides the default guess of the asset type.
+You can optionally specify a MIME type for the imported asset by using the mimeType parameter. If you do not specify a mimeType parameter, ts-embed makes a best guess about the type of the imported file based on the file extension.
 
 Currently supported MIME types:
 
