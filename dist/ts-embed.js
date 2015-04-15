@@ -13,7 +13,7 @@ var xp;
     ;
     function embed(embedParams) {
         return function (proto, propertyName) {
-            xp.EmbedUtils.process(embedParams, proto, propertyName);
+            xp.EmbedUtils.addPendingAsignment(embedParams, proto, propertyName);
         };
     }
     xp.embed = embed;
@@ -33,9 +33,9 @@ var xp;
                     req.removeEventListener('progress', loadBind, false);
                     _this._loaded();
                 };
+                req.open('GET', url);
                 req.responseType = 'arraybuffer';
                 req.addEventListener('load', loadBind, false);
-                req.open('GET', url);
                 req.send();
             }));
         };
@@ -86,16 +86,11 @@ var xp;
         Embed.dataURL = dataURL;
         function script(file) {
             var script = document.createElement('script');
-            script.appendChild(document.createTextNode(file.content));
+            script.addEventListener('load', function () { EmbedUtils.processPendingAssignments(); });
+            script.src = EmbedUtils.getURLFrom(file);
             return script;
         }
         Embed.script = script;
-        function $script(file) {
-            var script = Embed.script(file);
-            EmbedUtils.pendingDOMInjections.push({ target: document.head, source: script });
-            return script;
-        }
-        Embed.$script = $script;
         function style(file) {
             var s = document.createElement('style');
             s.type = 'text/css';
@@ -114,6 +109,14 @@ var xp;
     var EmbedUtils = (function () {
         function EmbedUtils() {
         }
+        EmbedUtils.injectScript = function (element) {
+            return new Promise(function (resolve, reject) {
+                element.addEventListener('load', function () { resolve(element); });
+                element.addEventListener('error', function () { reject(element); });
+                document.head.appendChild(element);
+                return element;
+            });
+        };
         EmbedUtils.imageFromDataURL = function (dataURL, revoke) {
             if (revoke === void 0) { revoke = false; }
             var img = document.createElement('img');
@@ -176,7 +179,7 @@ var xp;
         EmbedUtils.getSymbolAs = function (symbol, as) {
             return as(EmbedUtils.getSymbol(symbol));
         };
-        EmbedUtils.process = function (embedParams, proto, propertyName) {
+        EmbedUtils.addPendingAsignment = function (embedParams, proto, propertyName) {
             EmbedUtils.pendingAssignments.push({
                 params: embedParams,
                 proto: proto,
@@ -194,12 +197,8 @@ var xp;
             var files = Object.keys(diskMapObject);
             files.forEach(function (key) {
                 diskMapObject[key].start += (diskMapSize + 4);
-                EmbedUtils.unpack(key, data, diskMapObject[key]);
+                EmbedUtils.unpack(data, diskMapObject[key]);
                 EmbedUtils.MAP[key] = diskMapObject[key];
-            });
-            EmbedUtils.processPendingAssignments();
-            EmbedUtils.pendingDOMInjections.forEach(function (domInject) {
-                domInject.target.appendChild(domInject.source);
             });
             EmbedUtils.processPendingAssignments();
             return {
@@ -208,7 +207,6 @@ var xp;
             };
         };
         EmbedUtils.processPendingAssignments = function () {
-            EmbedUtils.pendingDOMInjections = [];
             EmbedUtils.pendingAssignments.filter(function (decParam) {
                 return decParam.done == false;
             }).forEach(function (decParam) {
@@ -291,7 +289,7 @@ var xp;
             dstU8.set(srcU8);
             return dstU8;
         };
-        EmbedUtils.unpack = function (key, data, file) {
+        EmbedUtils.unpack = function (data, file) {
             EmbedUtils.decompressFormat[file.format](data, file);
         };
         EmbedUtils.PJWHash = function (str) {
@@ -309,7 +307,6 @@ var xp;
             }
             return hash;
         };
-        EmbedUtils.pendingDOMInjections = [];
         EmbedUtils.MAP = {};
         EmbedUtils.decompressFormat = (function () {
             var decompressFormat = {};
@@ -324,5 +321,5 @@ var xp;
     var supportsBlob = ("URL" in window || "webkitURL" in window) && ("Blob" in window || "BlobBuilder" in window || "WebKitBlobBuilder" in window || "MozBlobBuilder" in window);
     var URL = window['URL'] || window['webkitURL'];
 })(xp || (xp = {}));
+/// <reference path="ts-embed.ts" />
 /// <reference path="typings/es6-promise/es6-promise.d.ts" />
-/// <reference path="ts-embed.ts" /> 

@@ -55,12 +55,11 @@ declare module xp {
         function image(file: IEmbedFile): HTMLImageElement;
         function dataURL(file: IEmbedFile): string;
         function script(file: IEmbedFile): HTMLScriptElement;
-        function $script(file: IEmbedFile): HTMLScriptElement;
         function style(file: IEmbedFile): HTMLStyleElement;
         function source(file: IEmbedFile): HTMLSourceElement;
     }
     class EmbedUtils {
-        static pendingDOMInjections: IPendingDOMInjection[];
+        static injectScript(element: HTMLScriptElement): Promise<HTMLScriptElement>;
         static imageFromDataURL(dataURL: string, revoke?: boolean): HTMLImageElement;
         static revokeURL(target: any): any;
         static getURLFrom(file: IEmbedFile): string;
@@ -68,7 +67,7 @@ declare module xp {
         static getFile(src: string): IEmbedFile;
         static getSymbol(symbol: string): IEmbedFile;
         static getSymbolAs(symbol: string, as: IEmbedExtractor): any;
-        static process(embedParams: IEmbedMeta, proto: any, propertyName: string): void;
+        static addPendingAsignment(embedParams: IEmbedMeta, proto: any, propertyName: string): void;
         static processFile(data: ArrayBuffer): {
             embedMap: EmbedDisk;
             map: EmbedDisk;
@@ -83,7 +82,7 @@ declare module xp {
         protected static readBinary(data: ArrayBuffer, file: IEmbedFile): void;
         protected static readUTF8(data: ArrayBuffer, file: IEmbedFile): void;
         protected static extractBuffer(src: ArrayBuffer, offset: any, length: any): Uint8Array;
-        protected static unpack(key: string, data: ArrayBuffer, file: IEmbedFile): void;
+        protected static unpack(data: ArrayBuffer, file: IEmbedFile): void;
         protected static PJWHash(str: string): number;
     }
 }

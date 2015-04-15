@@ -92,7 +92,6 @@ module.exports = function (grunt) {
                 }
             }
         });
-    grunt.loadNpmTasks('grunt-uncss');
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-ts-embed');

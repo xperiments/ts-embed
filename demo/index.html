@@ -3,15 +3,21 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <script src="js/ts-embed.min.js"></script>
-    <script src="src/EmbedSamples.js"></script>
+    <script src="bower_components/promise-polyfill/Promise.min.js"></script>
+
 </head>
 <body>
+<script src="js/ts-embed.min.js"></script>
+<script src="src/EmbedSamples.js"></script>
 <script>
     var loader = new xp.EmbedLoader();
     loader.load('bin/embedOutput.tse').then(function(){
 
-        new BasicExample();
+        //new BasicExample();
+        EmbedUtils.injectScript(EmbedSamples.BasicExample).then(function(){
+            new BasicExample();
+        })
+
 
     });
 </script>

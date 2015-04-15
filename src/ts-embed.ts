@@ -64,7 +64,7 @@ module xp {
 
 	export function embed( embedParams:xp.IEmbedMeta ):PropertyDecorator {
 		return function ( proto:any, propertyName:string ):void {
-			xp.EmbedUtils.process(embedParams, proto, propertyName);
+			xp.EmbedUtils.addPendingAsignment(embedParams, proto, propertyName);
 		}
 	}
 
@@ -94,9 +94,9 @@ module xp {
 						req.removeEventListener('progress', loadBind, false);
 						this._loaded();
 					};
+					req.open('GET', url);
 					req.responseType = 'arraybuffer';
 					req.addEventListener('load', loadBind, false);
-					req.open('GET', url);
 					req.send();
 				}) );
 
@@ -171,19 +171,8 @@ module xp {
 		export function script( file:IEmbedFile ):HTMLScriptElement {
 
 			var script = document.createElement('script');
-			script.appendChild(document.createTextNode(<string>file.content));
-			return script;
-		}
-		/**
-		 *
-		 * @param params
-		 * @returns {*}
-		 * @constructor
-		 */
-		export function $script( file:IEmbedFile ):HTMLScriptElement {
-
-			var script = Embed.script( file );
-			EmbedUtils.pendingDOMInjections.push({ target:document.head, source:<HTMLElement>script});
+			script.addEventListener('load',()=>{ EmbedUtils.processPendingAssignments(); });
+			script.src = EmbedUtils.getURLFrom( file );
 			return script;
 		}
 		/**
@@ -223,9 +212,18 @@ module xp {
 	export class EmbedUtils {
 
 
-		public static pendingDOMInjections:IPendingDOMInjection[] = [];
+		//public static pendingDOMInjections:IPendingDOMInjection[] = [];
 
 
+		public static injectScript( element:HTMLScriptElement ):Promise<HTMLScriptElement>{
+			return new Promise(( resolve, reject )=> {
+
+				element.addEventListener('load',function(){ resolve(element); });
+				element.addEventListener('error',function(){ reject(element); });
+				document.head.appendChild( element );
+				return element;
+			})
+		}
 		/**
 		 * Creates a new image from the provided dataURL
 		 * If dataURL is a blob reference and revoke option is true the blob is released also any successive calls to this method with the provided dataURL will **silently** fail.
@@ -346,7 +344,7 @@ module xp {
 		 * @param proto
 		 * @param propertyName
 		 */
-		public static process( embedParams:IEmbedMeta, proto:any, propertyName:string ) {
+		public static addPendingAsignment( embedParams:IEmbedMeta, proto:any, propertyName:string ) {
 			EmbedUtils.pendingAssignments.push({
 				params: embedParams,
 				proto: proto,
@@ -384,10 +382,14 @@ module xp {
 			});
 
 			EmbedUtils.processPendingAssignments();
-			EmbedUtils.pendingDOMInjections.forEach(( domInject:IPendingDOMInjection )=>{
-				domInject.target.appendChild( domInject.source );
-			});
-			EmbedUtils.processPendingAssignments();
+			//EmbedUtils.pendingDOMInjections.forEach(( domInject:IPendingDOMInjection )=>{
+			//
+			//	var head = document.getElementsByTagName("head")[0] || document.documentElement;
+			//	domInject.target.insertBefore( domInject.source, head.firstChild );
+			//	head.removeChild( domInject.source );
+			//
+			//});
+			//EmbedUtils.processPendingAssignments();
 			return {
 				embedMap: diskMapObject,
 				map: originalDiskMapObject
@@ -398,7 +400,7 @@ module xp {
 		 * Processes all pending assignments,getting its value from the file contents or from the "IEmbedMeta.as" provided parameter .
 		 */
 		static processPendingAssignments(){
-			EmbedUtils.pendingDOMInjections = [];
+			//EmbedUtils.pendingDOMInjections = [];
 			EmbedUtils.pendingAssignments.filter(( decParam:IEmbedDecorator )=> {
 				return decParam.done == false;
 			}).forEach(( decParam:IEmbedDecorator )=> {

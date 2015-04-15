@@ -29,6 +29,6 @@ import IEmbedDiskFile = xp.IEmbedFile;
 
 
 class EmbedSamples{
-	@embed({src:'./BasicExample.js', as:Embed.$script, mime:'text/javascript'})
+	@embed({src:'./BasicExample.js', as:Embed.script, mime:'text/javascript'})
 	static BasicExample:HTMLScriptElement;
 }
