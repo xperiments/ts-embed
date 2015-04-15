@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <title></title>
     <script src="js/ts-embed.min.js"></script>
-    <script src="src/EmbedSampleClass.js"></script>
+    <script src="src/EmbedSamples.js"></script>
 </head>
 <body>
 <script>
     var loader = new xp.EmbedLoader();
-    loader.load('bin/embedOutput.tse').then(function(a){
-        new EmbedSampleClass();
+    loader.load('bin/embedOutput.tse').then(function(){
+
+        new BasicExample();
+
     });
 </script>
 </body>
