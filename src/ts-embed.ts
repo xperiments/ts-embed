@@ -17,7 +17,7 @@ module xp {
 
 
 	/**
-	 * Internal storage representation of a file
+	 * Representation of file descriptor
 	 */
 	export interface IEmbedFile {
 		format:EmbedType;
@@ -28,12 +28,20 @@ module xp {
 		symbol?:string;
 	}
 
+	/**
+	 * The EmbedDisk interface contains a ( key,value ) pair of IEmbedFiles representing the available file assets.
+	 * IEmbedFiles are indexed by the PJWHash of the IEmbedFile original source path.
+	 *
+	 */
 	export interface EmbedDisk {
 		[key:string]:IEmbedFile;
 	}
 
 
-	export interface IEmbedMeta {
+	/**
+	 * The avaliable options provided to the @embed decorator
+	 */
+	export interface IEmbedOptions {
 		src:string;
 		format?:xp.EmbedType;
 		as?:IEmbedExtractor;
@@ -48,37 +56,47 @@ module xp {
 	export interface IEmbedExtractor {
 		( file:IEmbedFile ):any;
 	}
-	export interface IEmbedDecorator {
-		params:IEmbedMeta;
+
+	/**
+	 * Represents a Pending Assignment
+	 * Pending Assignments will be processed every time a new EmbedLibrary is loaded
+	 * or after any script injection that may contain new Pending Assignments
+	 */
+	export interface IEmbedPendingAssignment {
+		params:IEmbedOptions;
 		proto:any;
 		propertyName:string;
 		done?:boolean;
 	}
 
-	export interface IPendingDOMInjection { target:HTMLElement; source:HTMLElement};
+
 	/**
-	 *
+	 * The @embed decorator gets the specified source asset file from an ts-embed library and assigns it to the decorated property.
 	 * @param embedParams
 	 * @returns {function(any, string): void}
 	 */
-
-	export function embed( embedParams:xp.IEmbedMeta ):PropertyDecorator {
+	export function embed( embedParams:xp.IEmbedOptions ):PropertyDecorator {
 		return function ( proto:any, propertyName:string ):void {
 			xp.EmbedUtils.addPendingAsignment(embedParams, proto, propertyName);
 		}
 	}
 
+
+	/**
+	 * The EmbedLoader lets us load an ts-embed library
+	 */
 	export class EmbedLoader {
 
 		public url:string;
-		private _xhr:XMLHttpRequest = new XMLHttpRequest();
+		private _xhr:XMLHttpRequest;
 		private _resolve:any;
 		private _reject:any;
 		private _promise:Promise<EmbedDisk>;
 		private _embedDiskMap:EmbedDisk;
 
 		/**
-		 *
+		 * Loads an ts-embed library from the provided url
+		 * Returns a Promise that resolves to an EmbedDisk
 		 * @param url
 		 * @returns {Promise<EmbedDisk>|Promise<T>|Promise}
 		 */
@@ -88,20 +106,25 @@ module xp {
 					this._resolve = resolve;
 					this._reject = reject;
 					this.url = url;
-					var req = this._xhr;
-					var loadBind = ()=> {
-						req.removeEventListener('load', loadBind, false);
-						req.removeEventListener('progress', loadBind, false);
+					var req = this._xhr = new XMLHttpRequest();
+					var onload = ()=> {
+						req.removeEventListener('load', onload, false);
 						this._loaded();
 					};
 					req.open('GET', url);
 					req.responseType = 'arraybuffer';
-					req.addEventListener('load', loadBind, false);
+					req.addEventListener('load', onload, false);
 					req.send();
 				}) );
 
 		}
 
+		/**
+		 * Loads an ts-embed library from the provided ArrayBuffer
+		 * Returns a Promise that resolves to an EmbedDisk
+		 * @param buffer
+		 * @returns {Promise<EmbedDisk>|Promise<T>|Promise}
+		 */
 		public loadFromArrayBuffer( buffer:ArrayBuffer ):Promise<EmbedDisk> {
 			return this._promise || ( this._promise = new Promise(( resolve, reject )=> {
 					var result = EmbedUtils.processFile(buffer);
@@ -110,103 +133,91 @@ module xp {
 				}) );
 		}
 
+		/**
+		 * @private
+		 */
 		private _loaded():void {
 			if (this._xhr.status == 200) {
 				var result:{ embedMap:EmbedDisk; map:EmbedDisk } = EmbedUtils.processFile(this._xhr.response);
 				this._embedDiskMap = result.map;
 					this._resolve(result.embedMap);
+
 			}
 			else {
 				this._reject(this._xhr.statusText);
 			}
+			this._xhr = null;
 		}
 
-		public removeEventListener( type:string, listener:EventListener, useCapture?:boolean ):void {
-			this._xhr.removeEventListener(type, listener, useCapture);
-		}
-
-		public addEventListener( type:string, listener:EventListener, useCapture?:boolean ):void {
-			this._xhr.addEventListener(type, listener, useCapture);
-		}
-
-		public dispatchEvent( evt:Event ):boolean {
-			return this._xhr.dispatchEvent(evt);
-		}
 	}
 
+
+	/**
+	 *
+	 */
 	export module Embed {
 
-		var imageID:number = 0;
 		/**
-		 *
-		 * @param params
-		 * @returns {*}
-		 * @constructor
+		 * Returns an HTMLImageElement from the specified file
+		 * @param file
+		 * @returns {HTMLImageElement}
 		 */
 		export function image( file:IEmbedFile ):HTMLImageElement {
 
-			var img = document.createElement('img');
-			img.id='ts-image-'+(imageID++);
+			var img:HTMLImageElement = document.createElement('img');
 			img.src = EmbedUtils.getURLFrom(file);
-			console.log( file )
 			return img;
 		}
-		/**
-		 *
-		 * @param params
-		 * @returns {*}
-		 * @constructor
-		 */
-		export function dataURL( file:IEmbedFile ):string {
-
-			return EmbedUtils.getURLFrom(file);
-		}
 
 		/**
-		 *
-		 * @param params
-		 * @returns {*}
-		 * @constructor
+		 * Returns an HTMLScriptElement from the specified file
+		 * Scripts that contains @embed decorators must be injected with the EmbedUtils.injectScript method
+		 * @param file
+		 * @returns {HTMLScriptElement}
 		 */
 		export function script( file:IEmbedFile ):HTMLScriptElement {
 
-			var script = document.createElement('script');
+			var script:HTMLScriptElement = document.createElement('script');
 			script.addEventListener('load',()=>{ EmbedUtils.processPendingAssignments(); });
 			script.src = EmbedUtils.getURLFrom( file );
 			return script;
 		}
+
 		/**
-		 *
-		 * @param params
-		 * @returns {*}
-		 * @constructor
+		 * Returns an HTMLStyleElement from the specified file
+		 * @param file
+		 * @returns {HTMLStyleElement}
 		 */
 		export function style( file:IEmbedFile ):HTMLStyleElement {
 
-			var s = document.createElement('style');
-			s.type = 'text/css';
-			s.appendChild(document.createTextNode(<string>file.content));
-			return s;
+			var style:HTMLStyleElement = document.createElement('style');
+			style.type = 'text/css';
+			style.appendChild(document.createTextNode(<string>file.content));
+			return style;
 		}
 
-
 		/**
-		 *
-		 * @param params
+		 * Returns an HTMLSourceElement from the specified file
+		 * @param file
 		 * @returns {HTMLSourceElement}
-		 * @constructor
 		 */
 		export function source( file:IEmbedFile ):HTMLSourceElement {
 
-			var source = <HTMLSourceElement>document.createElement("source");
+			var source:HTMLSourceElement = <HTMLSourceElement>document.createElement("source");
 			source.type = file.mime;
 			source.src = EmbedUtils.getURLFrom(file);
 			return source;
 		}
 
+		/**
+		 * Returns an HTMLStyleElement from the specified file
+		 * @param file
+		 * @returns {string}
+		 */
+		export function dataURL( file:IEmbedFile ):string {
 
-
-
+			return EmbedUtils.getURLFrom(file);
+		}
 	}
 
 	export class EmbedUtils {
@@ -218,8 +229,8 @@ module xp {
 		public static injectScript( element:HTMLScriptElement ):Promise<HTMLScriptElement>{
 			return new Promise(( resolve, reject )=> {
 
-				element.addEventListener('load',function(){ resolve(element); });
-				element.addEventListener('error',function(){ reject(element); });
+				element.addEventListener('load',function onload(){ element.removeEventListener('load', onload ); resolve(element); });
+				element.addEventListener('error',function onerror(){ element.removeEventListener('error', onerror ); reject(element); });
 				document.head.appendChild( element );
 				return element;
 			})
@@ -261,7 +272,7 @@ module xp {
 		 */
 		public static getURLFrom( file:IEmbedFile ):string {
 			if (supportsBlob) {
-				return URL.createObjectURL(EmbedUtils.getBlob(file));
+				return URL.createObjectURL(EmbedUtils.getBlobContent(file));
 			}
 			return "data:" + file.mime + ";base64," + ( typeof file.content === "string" ? window.btoa(<string>file.content) : EmbedUtils.Uint8ArrayToBase64(<Uint8Array>file.content) );
 		}
@@ -272,7 +283,7 @@ module xp {
 		 * @param file
 		 * @returns {any}
 		 */
-		public static getBlob( file:IEmbedFile ):Blob {
+		public static getBlobContent( file:IEmbedFile ):Blob {
 			var blobContent:any = file.content;
 			var blobResult:any;
 			var BB = "BlobBuilder";
@@ -344,7 +355,7 @@ module xp {
 		 * @param proto
 		 * @param propertyName
 		 */
-		public static addPendingAsignment( embedParams:IEmbedMeta, proto:any, propertyName:string ) {
+		public static addPendingAsignment( embedParams:IEmbedOptions, proto:any, propertyName:string ) {
 			EmbedUtils.pendingAssignments.push({
 				params: embedParams,
 				proto: proto,
@@ -401,9 +412,9 @@ module xp {
 		 */
 		static processPendingAssignments(){
 			//EmbedUtils.pendingDOMInjections = [];
-			EmbedUtils.pendingAssignments.filter(( decParam:IEmbedDecorator )=> {
+			EmbedUtils.pendingAssignments.filter(( decParam:IEmbedPendingAssignment )=> {
 				return decParam.done == false;
-			}).forEach(( decParam:IEmbedDecorator )=> {
+			}).forEach(( decParam:IEmbedPendingAssignment )=> {
 				decParam.done = true;
 				var file:IEmbedFile = EmbedUtils.getFile(decParam.params.src);
 				decParam.proto[decParam.propertyName] = decParam.params.as ?
@@ -414,7 +425,7 @@ module xp {
 		/* Conversion utils */
 
 		/**
-		 *
+		 * UTF8ArrayToString
 		 * @param array
 		 * @returns {string}
 		 * @constructor
@@ -460,10 +471,12 @@ module xp {
 			return out;
 		}
 
-		/* UInt8Array to base64 */
 
-
-		/* Base64 string to array encoding */
+		/**
+		 * Base64 string to array encoding
+		 * @param nUint6
+		 * @returns {number}
+		 */
 		private static uint6ToB64( nUint6:number ):number {
 
 			return nUint6 < 26 ?
@@ -516,7 +529,7 @@ module xp {
 			decompressFormat[EmbedType.binary] = EmbedUtils.readBinary;
 			return decompressFormat;
 		})();
-		protected static pendingAssignments:IEmbedDecorator[] = [];
+		protected static pendingAssignments:IEmbedPendingAssignment[] = [];
 
 		/**
 		 * reads an embed file as a Uint8Array
@@ -584,6 +597,7 @@ module xp {
 			}
 			return hash;
 		}
+
 
 	}
 
