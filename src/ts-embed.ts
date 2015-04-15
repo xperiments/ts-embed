@@ -55,6 +55,7 @@ module xp {
 		done?:boolean;
 	}
 
+	export interface IPendingDOMInjection { target:HTMLElement; source:HTMLElement};
 	/**
 	 *
 	 * @param embedParams
@@ -105,7 +106,7 @@ module xp {
 			return this._promise || ( this._promise = new Promise(( resolve, reject )=> {
 					var result = EmbedUtils.processFile(buffer);
 					this._embedDiskMap = result.map;
-					resolve(result.embedMap);
+						resolve(result.embedMap);
 				}) );
 		}
 
@@ -113,7 +114,7 @@ module xp {
 			if (this._xhr.status == 200) {
 				var result:{ embedMap:EmbedDisk; map:EmbedDisk } = EmbedUtils.processFile(this._xhr.response);
 				this._embedDiskMap = result.map;
-				this._resolve(result.embedMap);
+					this._resolve(result.embedMap);
 			}
 			else {
 				this._reject(this._xhr.statusText);
@@ -135,6 +136,7 @@ module xp {
 
 	export module Embed {
 
+		var imageID:number = 0;
 		/**
 		 *
 		 * @param params
@@ -144,8 +146,20 @@ module xp {
 		export function image( file:IEmbedFile ):HTMLImageElement {
 
 			var img = document.createElement('img');
+			img.id='ts-image-'+(imageID++);
 			img.src = EmbedUtils.getURLFrom(file);
+			console.log( file )
 			return img;
+		}
+		/**
+		 *
+		 * @param params
+		 * @returns {*}
+		 * @constructor
+		 */
+		export function dataURL( file:IEmbedFile ):string {
+
+			return EmbedUtils.getURLFrom(file);
 		}
 
 		/**
@@ -157,7 +171,7 @@ module xp {
 		export function script( file:IEmbedFile ):HTMLScriptElement {
 
 			var script = document.createElement('script');
-			script.src = EmbedUtils.getURLFrom(file);
+			script.appendChild(document.createTextNode(<string>file.content));
 			return script;
 		}
 		/**
@@ -168,9 +182,8 @@ module xp {
 		 */
 		export function $script( file:IEmbedFile ):HTMLScriptElement {
 
-			console.log('aaaa',file)
 			var script = Embed.script( file );
-			document.body.appendChild(script);
+			EmbedUtils.pendingDOMInjections.push({ target:document.head, source:<HTMLElement>script});
 			return script;
 		}
 		/**
@@ -203,15 +216,39 @@ module xp {
 		}
 
 
+
+
 	}
 
 	export class EmbedUtils {
+
+
+		public static pendingDOMInjections:IPendingDOMInjection[] = [];
+
+
 		/**
-		 *
+		 * Creates a new image from the provided dataURL
+		 * If dataURL is a blob reference and revoke option is true the blob is released also any successive calls to this method with the provided dataURL will **silently** fail.
+		 * @param dataURL dddd
+		 * @param revoke
+		 * @returns {*}
+		 */
+		public static imageFromDataURL( dataURL:string, revoke:boolean = false ):HTMLImageElement {
+			var img = document.createElement('img');
+			if ( revoke && dataURL.indexOf('blob:')==0 ) {
+				img.onload = ()=>{
+					URL.revokeObjectURL( dataURL );
+				}
+			}
+			img.src = dataURL;
+			return img;
+		}
+		/**
+		 * Revokes if possible the provided blob target source and returns it
 		 * @param target
 		 */
 		public static revokeURL( target:any ):any {
-			if (target.src && target.src.indexOf('blob:') > -1) {
+			if (target.src && target.src.indexOf('blob:') ==0 ) {
 				target.onload = ()=> {
 					URL.revokeObjectURL(target.src);
 				}
@@ -220,7 +257,7 @@ module xp {
 		}
 
 		/**
-		 *
+		 * Generates a valid image/script src dataURL | Blob source
 		 * @param file
 		 * @returns {string}
 		 */
@@ -233,36 +270,38 @@ module xp {
 
 
 		/**
-		 *
+		 * Gets a blob for the provided Embed File
 		 * @param file
 		 * @returns {any}
 		 */
 		public static getBlob( file:IEmbedFile ):Blob {
 			var blobContent:any = file.content;
 			var blobResult:any;
-			var BBN = "BlobBuilder";
-			console.log( file.mime , typeof blobContent)
+			var BB = "BlobBuilder";
 			try {
-				blobResult = new Blob([
-					typeof blobContent === "string" ? blobContent : [<Uint8Array>blobContent.buffer]
-				]);
+				blobResult = new Blob(
+					[ typeof blobContent === "string" ? blobContent : <Uint8Array>blobContent.buffer ],
+					{type: file.mime});
 				return blobResult;
 			}
 			catch (e) {
 				// TypeError old chrome and FF
-				window[BBN] = window[BBN]
-				|| window['WebKit' + BBN]
-				|| window['Moz' + BBN]
-				|| window['MS' + BBN];
-				if (e.name == 'TypeError' && window[BBN]) {
-					var bb = new window[BBN]();
-					bb.append(blobContent instanceof String ? blobContent : [blobContent.buffer]);
+				window[BB] = window[BB]
+				|| window['WebKit' + BB]
+				|| window['Moz' + BB]
+				|| window['MS' + BB];
+				if (e.name == 'TypeError' && window[BB]) {
+					var bb = new window[BB]();
+					bb.append([ typeof blobContent === "string" ? blobContent : <Uint8Array>blobContent.buffer ]);
 					blobResult = bb.getBlob(file.mime);
 					return blobResult
 				}
 				else if (e.name == "InvalidStateError") {
 					// InvalidStateError FF13 WinXP
-					blobResult = new Blob(blobContent instanceof String ? blobContent : [blobContent.buffer], {type: file.mime});
+					blobResult = new Blob(
+						[ typeof blobContent === "string" ? blobContent : <Uint8Array>blobContent.buffer ],
+						{type: file.mime}
+					);
 					return blobResult
 				}
 
@@ -271,7 +310,7 @@ module xp {
 		}
 
 		/**
-		 *
+		 * Gets the IEmbedFile for the provided asset src file
 		 * @param src
 		 * @returns {IEmbedDiskFile}
 		 */
@@ -280,7 +319,7 @@ module xp {
 		}
 
 		/**
-		 *
+		 * Gets the IEmbedFile for the provided symbol
 		 * @param src
 		 * @returns {IEmbedDiskFile}
 		 */
@@ -291,22 +330,24 @@ module xp {
 		}
 
 		/**
-		 *
-		 * @param src
-		 * @returns {IEmbedDiskFile}
+		 * Gets the symbol param from the lib and returns it extracted with the as IEmbedExtractor param
+		 * @param symbol
+		 * @param as
+		 * @returns {any}
 		 */
-		public static getSymbolAs( symbol:string, as:IEmbedExtractor ) {
+		public static getSymbolAs( symbol:string, as:IEmbedExtractor ):any {
 			return as( EmbedUtils.getSymbol( symbol ) );
 		}
+
 		/**
-		 *
+		 * Used internally by the @embed decorator
+		 * Stores pending dynamic/static properties initialization
 		 * @param embedParams
 		 * @param proto
 		 * @param propertyName
 		 */
-
 		public static process( embedParams:IEmbedMeta, proto:any, propertyName:string ) {
-			EmbedUtils.assingProperties.push({
+			EmbedUtils.pendingAssignments.push({
 				params: embedParams,
 				proto: proto,
 				propertyName: propertyName,
@@ -315,8 +356,15 @@ module xp {
 		}
 
 		/**
+		 * Processes an ArrayBuffer loaded via xhr
+		 * >Reads the header
+		 * >Reads the json EmbedDisk object
+		 * >Generates corresponding static MAP data
+		 * >Processes pending assignments requests
+		 * >Injects pending Scripts to the dom
+		 * >Processes pending assignments requests that may have been generated by the loaded code )
 		 *
-		 * @param data
+		 * @param data ArrayBuffer representing the tse loaded file
 		 * @returns {EmbedDisk}
 		 */
 
@@ -331,24 +379,34 @@ module xp {
 			var files = Object.keys(diskMapObject);
 			files.forEach(( key )=> {
 				diskMapObject[key].start += (diskMapSize + 4);
-				EmbedUtils.unpack(key, data, diskMapObject);
+				EmbedUtils.unpack(data, diskMapObject[key]);
 				EmbedUtils.MAP[key] = diskMapObject[key];
 			});
 
-			EmbedUtils.assingProperties.filter(( decParam:IEmbedDecorator )=> {
-				return decParam.done == false;
-			}).forEach(( decParam:IEmbedDecorator )=> {
-				var file:IEmbedFile = EmbedUtils.getFile(decParam.params.src);
-				console.log( decParam.params.src )
-				decParam.proto[decParam.propertyName] = decParam.params.as ?
-					EmbedUtils.revokeURL(decParam.params.as(file)) : file.content;
-				decParam.done = true;
-
+			EmbedUtils.processPendingAssignments();
+			EmbedUtils.pendingDOMInjections.forEach(( domInject:IPendingDOMInjection )=>{
+				domInject.target.appendChild( domInject.source );
 			});
+			EmbedUtils.processPendingAssignments();
 			return {
 				embedMap: diskMapObject,
 				map: originalDiskMapObject
 			};
+		}
+
+		/**
+		 * Processes all pending assignments,getting its value from the file contents or from the "IEmbedMeta.as" provided parameter .
+		 */
+		static processPendingAssignments(){
+			EmbedUtils.pendingDOMInjections = [];
+			EmbedUtils.pendingAssignments.filter(( decParam:IEmbedDecorator )=> {
+				return decParam.done == false;
+			}).forEach(( decParam:IEmbedDecorator )=> {
+				decParam.done = true;
+				var file:IEmbedFile = EmbedUtils.getFile(decParam.params.src);
+				decParam.proto[decParam.propertyName] = decParam.params.as ?
+					EmbedUtils.revokeURL(decParam.params.as(file)) : file.content;
+			});
 		}
 
 		/* Conversion utils */
@@ -445,17 +503,21 @@ module xp {
 
 		}
 
+
+
+		// Actually holds all EmbedDisk Data ;-)
 		protected static MAP:EmbedDisk = {};
+
 		protected static decompressFormat:any = (()=> {
 			var decompressFormat = {};
 			decompressFormat[EmbedType.utf8] = EmbedUtils.readUTF8;
 			decompressFormat[EmbedType.binary] = EmbedUtils.readBinary;
 			return decompressFormat;
 		})();
-		protected static assingProperties:IEmbedDecorator[] = [];
+		protected static pendingAssignments:IEmbedDecorator[] = [];
 
 		/**
-		 *
+		 * reads an embed file as a Uint8Array
 		 * @param data
 		 * @param file
 		 */
@@ -464,7 +526,7 @@ module xp {
 		}
 
 		/**
-		 *
+		 * reads an embed file as a UTF8
 		 * @param data
 		 * @param file
 		 */
@@ -473,7 +535,7 @@ module xp {
 		}
 
 		/**
-		 *
+		 * Extracts a Uint8Array buffer from ArrayBuffer
 		 * @param src
 		 * @param offset
 		 * @param length
@@ -488,24 +550,23 @@ module xp {
 		}
 
 		/**
-		 *
+		 * Unpacks the file from the ArrayBuffer
 		 * @param key
 		 * @param data
 		 * @param diskMapObject
 		 */
-		protected static unpack( key:string, data:ArrayBuffer, diskMapObject:EmbedDisk ) {
-			EmbedUtils.decompressFormat[diskMapObject[key].format](data, diskMapObject[key]);
+		protected static unpack(data:ArrayBuffer, file:IEmbedFile ) {
+			EmbedUtils.decompressFormat[file.format](data, file);
 		}
 
 
-		/* method 4 hash source file */
+
 		/**
-		 *
+		 * simple hash algorithm
 		 * @param str
 		 * @returns {number}
 		 * @constructor
 		 */
-
 		protected static PJWHash( str:string ):number {
 			var BitsInUnsignedInt = 4 * 8;
 			var ThreeQuarters = (BitsInUnsignedInt * 3) / 4;

@@ -10,6 +10,7 @@ var xp;
         EmbedType[EmbedType["utf8"] = 1] = "utf8";
     })(xp.EmbedType || (xp.EmbedType = {}));
     var EmbedType = xp.EmbedType;
+    ;
     function embed(embedParams) {
         return function (proto, propertyName) {
             xp.EmbedUtils.process(embedParams, proto, propertyName);
@@ -70,22 +71,28 @@ var xp;
     xp.EmbedLoader = EmbedLoader;
     var Embed;
     (function (Embed) {
+        var imageID = 0;
         function image(file) {
             var img = document.createElement('img');
+            img.id = 'ts-image-' + (imageID++);
             img.src = EmbedUtils.getURLFrom(file);
+            console.log(file);
             return img;
         }
         Embed.image = image;
+        function dataURL(file) {
+            return EmbedUtils.getURLFrom(file);
+        }
+        Embed.dataURL = dataURL;
         function script(file) {
             var script = document.createElement('script');
-            script.src = EmbedUtils.getURLFrom(file);
+            script.appendChild(document.createTextNode(file.content));
             return script;
         }
         Embed.script = script;
         function $script(file) {
-            console.log('aaaa', file);
             var script = Embed.script(file);
-            document.body.appendChild(script);
+            EmbedUtils.pendingDOMInjections.push({ target: document.head, source: script });
             return script;
         }
         Embed.$script = $script;
@@ -107,8 +114,19 @@ var xp;
     var EmbedUtils = (function () {
         function EmbedUtils() {
         }
+        EmbedUtils.imageFromDataURL = function (dataURL, revoke) {
+            if (revoke === void 0) { revoke = false; }
+            var img = document.createElement('img');
+            if (revoke && dataURL.indexOf('blob:') == 0) {
+                img.onload = function () {
+                    URL.revokeObjectURL(dataURL);
+                };
+            }
+            img.src = dataURL;
+            return img;
+        };
         EmbedUtils.revokeURL = function (target) {
-            if (target.src && target.src.indexOf('blob:') > -1) {
+            if (target.src && target.src.indexOf('blob:') == 0) {
                 target.onload = function () {
                     URL.revokeObjectURL(target.src);
                 };
@@ -124,27 +142,24 @@ var xp;
         EmbedUtils.getBlob = function (file) {
             var blobContent = file.content;
             var blobResult;
-            var BBN = "BlobBuilder";
-            console.log(file.mime, typeof blobContent);
+            var BB = "BlobBuilder";
             try {
-                blobResult = new Blob([
-                    typeof blobContent === "string" ? blobContent : [blobContent.buffer]
-                ]);
+                blobResult = new Blob([typeof blobContent === "string" ? blobContent : blobContent.buffer], { type: file.mime });
                 return blobResult;
             }
             catch (e) {
-                window[BBN] = window[BBN]
-                    || window['WebKit' + BBN]
-                    || window['Moz' + BBN]
-                    || window['MS' + BBN];
-                if (e.name == 'TypeError' && window[BBN]) {
-                    var bb = new window[BBN]();
-                    bb.append(blobContent instanceof String ? blobContent : [blobContent.buffer]);
+                window[BB] = window[BB]
+                    || window['WebKit' + BB]
+                    || window['Moz' + BB]
+                    || window['MS' + BB];
+                if (e.name == 'TypeError' && window[BB]) {
+                    var bb = new window[BB]();
+                    bb.append([typeof blobContent === "string" ? blobContent : blobContent.buffer]);
                     blobResult = bb.getBlob(file.mime);
                     return blobResult;
                 }
                 else if (e.name == "InvalidStateError") {
-                    blobResult = new Blob(blobContent instanceof String ? blobContent : [blobContent.buffer], { type: file.mime });
+                    blobResult = new Blob([typeof blobContent === "string" ? blobContent : blobContent.buffer], { type: file.mime });
                     return blobResult;
                 }
             }
@@ -162,7 +177,7 @@ var xp;
             return as(EmbedUtils.getSymbol(symbol));
         };
         EmbedUtils.process = function (embedParams, proto, propertyName) {
-            EmbedUtils.assingProperties.push({
+            EmbedUtils.pendingAssignments.push({
                 params: embedParams,
                 proto: proto,
                 propertyName: propertyName,
@@ -179,22 +194,29 @@ var xp;
             var files = Object.keys(diskMapObject);
             files.forEach(function (key) {
                 diskMapObject[key].start += (diskMapSize + 4);
-                EmbedUtils.unpack(key, data, diskMapObject);
+                EmbedUtils.unpack(key, data, diskMapObject[key]);
                 EmbedUtils.MAP[key] = diskMapObject[key];
             });
-            EmbedUtils.assingProperties.filter(function (decParam) {
-                return decParam.done == false;
-            }).forEach(function (decParam) {
-                var file = EmbedUtils.getFile(decParam.params.src);
-                console.log(decParam.params.src);
-                decParam.proto[decParam.propertyName] = decParam.params.as ?
-                    EmbedUtils.revokeURL(decParam.params.as(file)) : file.content;
-                decParam.done = true;
+            EmbedUtils.processPendingAssignments();
+            EmbedUtils.pendingDOMInjections.forEach(function (domInject) {
+                domInject.target.appendChild(domInject.source);
             });
+            EmbedUtils.processPendingAssignments();
             return {
                 embedMap: diskMapObject,
                 map: originalDiskMapObject
             };
+        };
+        EmbedUtils.processPendingAssignments = function () {
+            EmbedUtils.pendingDOMInjections = [];
+            EmbedUtils.pendingAssignments.filter(function (decParam) {
+                return decParam.done == false;
+            }).forEach(function (decParam) {
+                decParam.done = true;
+                var file = EmbedUtils.getFile(decParam.params.src);
+                decParam.proto[decParam.propertyName] = decParam.params.as ?
+                    EmbedUtils.revokeURL(decParam.params.as(file)) : file.content;
+            });
         };
         EmbedUtils.UTF8ArrayToString = function (array) {
             var out, i, len, c;
@@ -269,8 +291,8 @@ var xp;
             dstU8.set(srcU8);
             return dstU8;
         };
-        EmbedUtils.unpack = function (key, data, diskMapObject) {
-            EmbedUtils.decompressFormat[diskMapObject[key].format](data, diskMapObject[key]);
+        EmbedUtils.unpack = function (key, data, file) {
+            EmbedUtils.decompressFormat[file.format](data, file);
         };
         EmbedUtils.PJWHash = function (str) {
             var BitsInUnsignedInt = 4 * 8;
@@ -287,6 +309,7 @@ var xp;
             }
             return hash;
         };
+        EmbedUtils.pendingDOMInjections = [];
         EmbedUtils.MAP = {};
         EmbedUtils.decompressFormat = (function () {
             var decompressFormat = {};
@@ -294,7 +317,7 @@ var xp;
             decompressFormat[EmbedType.binary] = EmbedUtils.readBinary;
             return decompressFormat;
         })();
-        EmbedUtils.assingProperties = [];
+        EmbedUtils.pendingAssignments = [];
         return EmbedUtils;
     })();
     xp.EmbedUtils = EmbedUtils;

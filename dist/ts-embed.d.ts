@@ -32,6 +32,10 @@ declare module xp {
         propertyName: string;
         done?: boolean;
     }
+    interface IPendingDOMInjection {
+        target: HTMLElement;
+        source: HTMLElement;
+    }
     function embed(embedParams: xp.IEmbedMeta): PropertyDecorator;
     class EmbedLoader {
         url: string;
@@ -49,12 +53,15 @@ declare module xp {
     }
     module Embed {
         function image(file: IEmbedFile): HTMLImageElement;
+        function dataURL(file: IEmbedFile): string;
         function script(file: IEmbedFile): HTMLScriptElement;
         function $script(file: IEmbedFile): HTMLScriptElement;
         function style(file: IEmbedFile): HTMLStyleElement;
         function source(file: IEmbedFile): HTMLSourceElement;
     }
     class EmbedUtils {
+        static pendingDOMInjections: IPendingDOMInjection[];
+        static imageFromDataURL(dataURL: string, revoke?: boolean): HTMLImageElement;
         static revokeURL(target: any): any;
         static getURLFrom(file: IEmbedFile): string;
         static getBlob(file: IEmbedFile): Blob;
@@ -66,16 +73,17 @@ declare module xp {
             embedMap: EmbedDisk;
             map: EmbedDisk;
         };
+        static processPendingAssignments(): void;
         static UTF8ArrayToString(array: Uint8Array): string;
         private static uint6ToB64(nUint6);
         static Uint8ArrayToBase64(aBytes: Uint8Array): string;
         protected static MAP: EmbedDisk;
         protected static decompressFormat: any;
-        protected static assingProperties: IEmbedDecorator[];
+        protected static pendingAssignments: IEmbedDecorator[];
         protected static readBinary(data: ArrayBuffer, file: IEmbedFile): void;
         protected static readUTF8(data: ArrayBuffer, file: IEmbedFile): void;
         protected static extractBuffer(src: ArrayBuffer, offset: any, length: any): Uint8Array;
-        protected static unpack(key: string, data: ArrayBuffer, diskMapObject: EmbedDisk): void;
+        protected static unpack(key: string, data: ArrayBuffer, file: IEmbedFile): void;
         protected static PJWHash(str: string): number;
     }
 }
