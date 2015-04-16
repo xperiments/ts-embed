@@ -58,7 +58,8 @@ module.exports = function (grunt) {
                         target: 'es5',
                         out: './docs',
                         name: 'ts-embed API docs',
-                        mode:'file'
+                        mode:'file',
+                        theme:'minimal'
                     },
                     src: ['tmp/**/*.ts','!tmp/reference.ts']
                 }
@@ -101,30 +102,30 @@ module.exports = function (grunt) {
             // replace es6-promise.d.ts path inside ts-embed.d.ts for the demo
             replace: {
                 definitions: {
-                    src: ['demo/src/typings/ts-embed/ts-embed.d.ts'],             // source files array (supports minimatch)
-                    dest: 'demo/src/typings/ts-embed/ts-embed.d.ts',             // destination directory or file
+                    src: ['demo/src/typings/ts-embed/ts-embed.d.ts'],
+                    dest: 'demo/src/typings/ts-embed/ts-embed.d.ts',
                     replacements: [{
-                        from: '../src/typings/es6-promise/es6-promise.d.ts',                   // string replacement
+                        from: '../src/typings/es6-promise/es6-promise.d.ts',
                         to: '../es6-promise/es6-promise.d.ts'
                     }]
                 },
                 doc:{
-                    src: ['tmp/ts-embed.ts'],             // source files array (supports minimatch)
-                    dest: 'tmp/ts-embed.ts',             // destination directory or file
+                    src: ['tmp/ts-embed.ts'],
+                    dest: 'tmp/ts-embed.ts',
                     replacements: [
                         {
-                            from: 'PropertyDecorator',                   // string replacement
+                            from: 'PropertyDecorator',
                             to: 'any'
                         },
                         {
-                            from: 'path="reference.ts"',                   // string replacement
+                            from: 'path="reference.ts"',
                             to: 'path="typings/es6-promise/es6-promise.d.ts"'
                         }
                     ]
                 }
             },
             clean:{
-                doc: ["tmp"]
+                doc: ["tmp1"]
             }
         });
     grunt.loadNpmTasks('grunt-contrib-watch');
