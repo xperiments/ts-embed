@@ -22,10 +22,10 @@
 //}
 
 
-import embed = xp.embed;
-import EmbedType = xp.EmbedType;
-import EmbedUtils = xp.EmbedUtils;
-import IEmbedDiskFile = xp.IEmbedFile;
+import embed = tsembed.embed;
+import EmbedType = tsembed.EmbedType;
+import EmbedUtils = tsembed.EmbedUtils;
+import IEmbedDiskFile = tsembed.IEmbedAsset;
 
 class EmbedSamples{
 	@embed({src:'./BasicExample.js', as:EmbedType.script, mime:'text/javascript'})

@@ -16,7 +16,7 @@ module.exports = function (grunt) {
                         module: 'commonjs',            // 'amd' (default) | 'commonjs'
                         sourceMap: true,               // true (default) | false
                         declaration: true,            // true | false (default)
-                        removeComments: true,           // true (default) | false
+                        removeComments: false,           // true (default) | false
                         fast: "never",
                         compiler:'./node_modules/typescript/bin/tsc'
                     }
@@ -49,7 +49,20 @@ module.exports = function (grunt) {
                         fast: "never",
                         compiler:'./node_modules/typescript/bin/tsc'
                     }
-                },
+                }
+            },
+            typedoc: {
+                release: {
+                    options: {
+                        module: 'commonjs',
+                        target: 'es5',
+                        out: './docs',
+                        name: 'ts-embed',
+                        externalPattern:['./tmp/reference.ts'],
+                        excludeExternals:['./tmp/reference.ts']
+                    },
+                    src: ['tmp/**/*.ts','!tmp/reference.ts']
+                }
             },
             watch: {
                 ts: {
@@ -77,6 +90,12 @@ module.exports = function (grunt) {
                         {expand: true, cwd:'dist', src: ['ts-embed.d.ts'], dest: 'demo/src/typings/ts-embed'}
 
                     ]
+                },
+                doc:{
+                    files:[
+                        {expand: true, cwd:'src', src: ['**/*'], dest: 'tmp'}
+
+                    ]
                 }
             },
 
@@ -89,17 +108,39 @@ module.exports = function (grunt) {
                         from: '../src/typings/es6-promise/es6-promise.d.ts',                   // string replacement
                         to: '../es6-promise/es6-promise.d.ts'
                     }]
+                },
+                doc:{
+                    src: ['tmp/ts-embed.ts'],             // source files array (supports minimatch)
+                    dest: 'tmp/ts-embed.ts',             // destination directory or file
+                    replacements: [
+                        {
+                            from: 'PropertyDecorator',                   // string replacement
+                            to: 'any'
+                        },
+                        {
+                            from: 'path="reference.ts"',                   // string replacement
+                            to: 'path="typings/es6-promise/es6-promise.d.ts"'
+                        }
+                    ]
                 }
+            },
+            clean:{
+                doc: ["tmp"]
             }
         });
-    grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-ts-embed');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+
+    grunt.loadNpmTasks('grunt-ts');
+    grunt.loadNpmTasks('grunt-ts-embed');
     grunt.loadNpmTasks('grunt-text-replace');
+    grunt.loadNpmTasks('grunt-typedoc');
+
     grunt.registerTask("default", ["ts:build","watch"]);
     grunt.registerTask("demo", ["copy:definitions","replace:definitions","ts:demo","ts:basicExample","embed:demo"]);
     grunt.registerTask("compile", ["ts:build","uglify:js"]);
     grunt.registerTask("release", ["compile","demo"]);
+    grunt.registerTask("doc", ["ts:build","copy:doc","replace:doc","typedoc:release","clean:doc"]);
 }

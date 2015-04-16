@@ -19,9 +19,9 @@ class BasicExample{
 
 	constructor() {
 
-		document.body.appendChild(EmbedUtils.imageFromDataURL(this.pngImage));
-		document.body.appendChild(EmbedUtils.imageFromDataURL(this.pngImage));
-		document.body.appendChild(EmbedUtils.imageFromDataURL(this.pngImage));
+		document.body.appendChild(EmbedUtils.imageFromObjectURL(this.pngImage));
+		document.body.appendChild(EmbedUtils.imageFromObjectURL(this.pngImage));
+		document.body.appendChild(EmbedUtils.imageFromObjectURL(this.pngImage));
 	}
 
 }
