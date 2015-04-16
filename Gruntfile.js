@@ -57,9 +57,8 @@ module.exports = function (grunt) {
                         module: 'commonjs',
                         target: 'es5',
                         out: './docs',
-                        name: 'ts-embed',
-                        externalPattern:['./tmp/reference.ts'],
-                        excludeExternals:['./tmp/reference.ts']
+                        name: 'ts-embed API docs',
+                        mode:'file'
                     },
                     src: ['tmp/**/*.ts','!tmp/reference.ts']
                 }
