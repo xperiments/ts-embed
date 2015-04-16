@@ -914,29 +914,34 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
 		<li class=" tsd-kind-module tsd-is-not-exported">
 			<a href="index.html#tsembed" class="tsd-kind-icon">tsembed</a>
 			<ul>
-				<li class=" tsd-kind-enum tsd-parent-kind-module">
+				<li class=" tsd-kind-module tsd-parent-kind-module">
 					<a href="index.html#tsembed.embedtype" class="tsd-kind-icon">Embed<wbr>Type</a>
 					<ul>
-						<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-							<a href="index.html#tsembed.embedtype.binary" class="tsd-kind-icon">binary</a>
-						</li>
-						<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-							<a href="index.html#tsembed.embedtype.utf8" class="tsd-kind-icon">utf8</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-enum">
+						<li class=" tsd-kind-function tsd-parent-kind-module">
 							<a href="index.html#tsembed.embedtype.image" class="tsd-kind-icon">image</a>
 						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-enum">
+						<li class=" tsd-kind-function tsd-parent-kind-module">
 							<a href="index.html#tsembed.embedtype.objecturl" class="tsd-kind-icon">objectURL</a>
 						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-enum">
+						<li class=" tsd-kind-function tsd-parent-kind-module">
 							<a href="index.html#tsembed.embedtype.script" class="tsd-kind-icon">script</a>
 						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-enum">
+						<li class=" tsd-kind-function tsd-parent-kind-module">
 							<a href="index.html#tsembed.embedtype.source" class="tsd-kind-icon">source</a>
 						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-enum">
+						<li class=" tsd-kind-function tsd-parent-kind-module">
 							<a href="index.html#tsembed.embedtype.style" class="tsd-kind-icon">style</a>
+						</li>
+					</ul>
+				</li>
+				<li class=" tsd-kind-enum tsd-parent-kind-module">
+					<a href="index.html#tsembed.embedformat" class="tsd-kind-icon">Embed<wbr>Format</a>
+					<ul>
+						<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+							<a href="index.html#tsembed.embedformat.binary" class="tsd-kind-icon">binary</a>
+						</li>
+						<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+							<a href="index.html#tsembed.embedformat.utf8" class="tsd-kind-icon">utf8</a>
 						</li>
 					</ul>
 				</li>
@@ -1135,6 +1140,7 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
 				<li><a href="#install">install</a></li>
 				<li><a href="#usage">usage</a></li>
 				<li><a href="#loading">loading</a></li>
+				<li><a href="http://www.xperiments.io/ts-embed/">ts-embed API</a></li>
 				<li><a href="#grunt-ts-embed">grunt-ts-embed task</a></li>
 			</ul>
 			<h2 id="install">Install</h2>
@@ -1407,46 +1413,24 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<li>Defined in ts-embed.ts:3</li>
 					</ul>
 				</aside>
-				<section class="tsd-panel tsd-member tsd-kind-enum tsd-parent-kind-module">
+				<section class="tsd-panel tsd-member tsd-kind-module tsd-parent-kind-module">
 					<a name="tsembed.embedtype" class="tsd-anchor"></a>
 					<h3>Embed<wbr>Type</h3>
 					<div class="tsd-signature tsd-kind-icon">Embed<wbr>Type<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ts-embed.ts:9</li>
 							<li>Defined in ts-embed.ts:155</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Types of internal data storage formats
-							The EmbedType module contains basic IEmbedExtractor functions used in the @embed decorator</p>
+							<p>The EmbedType module contains basic IEmbedExtractor functions used in the @embed decorator</p>
 						</div>
 					</div>
-					<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-						<a name="tsembed.embedtype.binary" class="tsd-anchor"></a>
-						<h3>binary</h3>
-						<div class="tsd-signature tsd-kind-icon">binary<span class="tsd-signature-symbol">:</span> </div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in ts-embed.ts:11</li>
-							</ul>
-						</aside>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-						<a name="tsembed.embedtype.utf8" class="tsd-anchor"></a>
-						<h3>utf8</h3>
-						<div class="tsd-signature tsd-kind-icon">utf8<span class="tsd-signature-symbol">:</span> </div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in ts-embed.ts:12</li>
-							</ul>
-						</aside>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-enum">
+					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 						<a name="tsembed.embedtype.image" class="tsd-anchor"></a>
 						<h3>image</h3>
-						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-enum">
+						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
 							<li class="tsd-signature tsd-kind-icon">image<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><a href="index.html#tsembed.iembedasset" class="tsd-signature-type">IEmbedAsset</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLImageElement</span></li>
 						</ul>
 						<ul class="tsd-descriptions">
@@ -1471,10 +1455,10 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							</li>
 						</ul>
 					</section>
-					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-enum">
+					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 						<a name="tsembed.embedtype.objecturl" class="tsd-anchor"></a>
 						<h3>objectURL</h3>
-						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-enum">
+						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
 							<li class="tsd-signature tsd-kind-icon">objectURL<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><a href="index.html#tsembed.iembedasset" class="tsd-signature-type">IEmbedAsset</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 						</ul>
 						<ul class="tsd-descriptions">
@@ -1499,10 +1483,10 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							</li>
 						</ul>
 					</section>
-					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-enum">
+					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 						<a name="tsembed.embedtype.script" class="tsd-anchor"></a>
 						<h3>script</h3>
-						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-enum">
+						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
 							<li class="tsd-signature tsd-kind-icon">script<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><a href="index.html#tsembed.iembedasset" class="tsd-signature-type">IEmbedAsset</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLScriptElement</span></li>
 						</ul>
 						<ul class="tsd-descriptions">
@@ -1528,10 +1512,10 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							</li>
 						</ul>
 					</section>
-					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-enum">
+					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 						<a name="tsembed.embedtype.source" class="tsd-anchor"></a>
 						<h3>source</h3>
-						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-enum">
+						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
 							<li class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><a href="index.html#tsembed.iembedasset" class="tsd-signature-type">IEmbedAsset</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLSourceElement</span></li>
 						</ul>
 						<ul class="tsd-descriptions">
@@ -1556,10 +1540,10 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							</li>
 						</ul>
 					</section>
-					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-enum">
+					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 						<a name="tsembed.embedtype.style" class="tsd-anchor"></a>
 						<h3>style</h3>
-						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-enum">
+						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
 							<li class="tsd-signature tsd-kind-icon">style<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><a href="index.html#tsembed.iembedasset" class="tsd-signature-type">IEmbedAsset</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLStyleElement</span></li>
 						</ul>
 						<ul class="tsd-descriptions">
@@ -1583,6 +1567,41 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 								<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLStyleElement</span></h4>
 							</li>
 						</ul>
+					</section>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum tsd-parent-kind-module">
+					<a name="tsembed.embedformat" class="tsd-anchor"></a>
+					<h3>Embed<wbr>Format</h3>
+					<div class="tsd-signature tsd-kind-icon">Embed<wbr>Format<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in ts-embed.ts:9</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Types of internal data storage formats</p>
+						</div>
+					</div>
+					<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+						<a name="tsembed.embedformat.binary" class="tsd-anchor"></a>
+						<h3>binary</h3>
+						<div class="tsd-signature tsd-kind-icon">binary<span class="tsd-signature-symbol">:</span> </div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in ts-embed.ts:11</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+						<a name="tsembed.embedformat.utf8" class="tsd-anchor"></a>
+						<h3>utf8</h3>
+						<div class="tsd-signature tsd-kind-icon">utf8<span class="tsd-signature-symbol">:</span> </div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in ts-embed.ts:12</li>
+							</ul>
+						</aside>
 					</section>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-class tsd-parent-kind-module tsd-is-not-exported">
@@ -2375,7 +2394,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 						<a name="tsembed.iembedasset.format" class="tsd-anchor"></a>
 						<h3>format</h3>
-						<div class="tsd-signature tsd-kind-icon">format<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.embedtype" class="tsd-signature-type">EmbedType</a></div>
+						<div class="tsd-signature tsd-kind-icon">format<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.embedformat" class="tsd-signature-type">EmbedFormat</a></div>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in ts-embed.ts:20</li>
@@ -2478,7 +2497,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 						<a name="tsembed.iembedoptions.format-1" class="tsd-anchor"></a>
 						<h3>format</h3>
-						<div class="tsd-signature tsd-kind-icon">format<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.embedtype" class="tsd-signature-type">EmbedType</a></div>
+						<div class="tsd-signature tsd-kind-icon">format<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.embedformat" class="tsd-signature-type">EmbedFormat</a></div>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in ts-embed.ts:43</li>
