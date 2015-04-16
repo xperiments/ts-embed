@@ -3,12 +3,7 @@
  * Created by xperiments on 07/04/15.
  */
 ///<reference path="reference.ts"/>
-import embed = xp.embed;
-import Embed = xp.Embed;
-import EmbedUtils = xp.EmbedUtils;
-import IEmbedDiskFile = xp.IEmbedFile;
 
-type PrimitiveArray = Array<string|number|boolean>;
 class BasicExample{
 
 	// html file
@@ -17,13 +12,15 @@ class BasicExample{
 
 
 	// png file as HTMLImageElement
-	@embed({src:'./resources/pngImage.png', as:Embed.dataURL })
+	@embed({src:'./resources/pngImage.png', as:EmbedType.objectURL })
 	 pngImage:string;
 
 
 
 	constructor() {
 
+		document.body.appendChild(EmbedUtils.imageFromDataURL(this.pngImage));
+		document.body.appendChild(EmbedUtils.imageFromDataURL(this.pngImage));
 		document.body.appendChild(EmbedUtils.imageFromDataURL(this.pngImage));
 	}
 

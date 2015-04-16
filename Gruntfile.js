@@ -14,7 +14,7 @@ module.exports = function (grunt) {
                     options: {                         // use to override the default options, http://gruntjs.com/configuring-tasks#options
                         target: 'es5',                 // 'es3' (default) | 'es5'
                         module: 'commonjs',            // 'amd' (default) | 'commonjs'
-                        sourceMap: false,               // true (default) | false
+                        sourceMap: true,               // true (default) | false
                         declaration: true,            // true | false (default)
                         removeComments: true,           // true (default) | false
                         fast: "never",
@@ -29,7 +29,7 @@ module.exports = function (grunt) {
                     options: {                         // use to override the default options, http://gruntjs.com/configuring-tasks#options
                         target: 'es5',                 // 'es3' (default) | 'es5'
                         module: 'commonjs',            // 'amd' (default) | 'commonjs'
-                        sourceMap: false,               // true (default) | false
+                        sourceMap: true,               // true (default) | false
                         declaration: false,            // true | false (default)
                         removeComments: true,           // true (default) | false
                         fast: "never",
@@ -43,7 +43,7 @@ module.exports = function (grunt) {
                     options: {                         // use to override the default options, http://gruntjs.com/configuring-tasks#options
                         target: 'es5',                 // 'es3' (default) | 'es5'
                         module: 'commonjs',            // 'amd' (default) | 'commonjs'
-                        sourceMap: false,               // true (default) | false
+                        sourceMap: true,               // true (default) | false
                         declaration: false,            // true | false (default)
                         removeComments: true,           // true (default) | false
                         fast: "never",

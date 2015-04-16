@@ -23,12 +23,11 @@
 
 
 import embed = xp.embed;
-import Embed = xp.Embed;
+import EmbedType = xp.EmbedType;
 import EmbedUtils = xp.EmbedUtils;
 import IEmbedDiskFile = xp.IEmbedFile;
 
-
 class EmbedSamples{
-	@embed({src:'./BasicExample.js', as:Embed.script, mime:'text/javascript'})
+	@embed({src:'./BasicExample.js', as:EmbedType.script, mime:'text/javascript'})
 	static BasicExample:HTMLScriptElement;
 }

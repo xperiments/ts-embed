@@ -13,10 +13,9 @@
     var loader = new xp.EmbedLoader();
     loader.load('bin/embedOutput.tse').then(function(){
 
-        //new BasicExample();
         EmbedUtils.injectScript(EmbedSamples.BasicExample).then(function(){
             new BasicExample();
-        })
+        });
 
 
     });
