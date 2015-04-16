@@ -1,10 +1,6 @@
-/**
- * ts-embed.ts
- * Created by xperiments on 30/03/15.
- */
 ///<reference path="reference.ts"/>
 
-module xp {
+module tsembed {
 
 
 	/**
@@ -20,7 +16,7 @@ module xp {
 	/**
 	 * Representation of file descriptor
 	 */
-	export interface IEmbedFile {
+	export interface IEmbedAsset {
 		format:EmbedType;
 		mime:string;
 		start:number;
@@ -31,11 +27,11 @@ module xp {
 
 	/**
 	 * The EmbedDisk interface contains a ( key,value ) pair of IEmbedFiles representing the available file assets.
-	 * IEmbedFiles are indexed by the PJWHash of the IEmbedFile original source path.
+	 * IEmbedFiles are indexed by the PJWHash of the IEmbedAsset original source path.
 	 *
 	 */
 	export interface EmbedDisk {
-		[key:string]:IEmbedFile;
+		[key:string]:IEmbedAsset;
 	}
 
 
@@ -44,7 +40,7 @@ module xp {
 	 */
 	export interface IEmbedOptions {
 		src:string;
-		format?:xp.EmbedType;
+		format?:tsembed.EmbedType;
 		as?:IEmbedExtractor;
 		symbol?:string;
 		mime?:string;
@@ -55,7 +51,7 @@ module xp {
 	 * A method that gets the internal data representation from a file
 	 */
 	export interface IEmbedExtractor {
-		( file:IEmbedFile ):any;
+		( file:IEmbedAsset ):any;
 	}
 
 	/**
@@ -76,7 +72,7 @@ module xp {
 	 * @param embedParams
 	 * @returns {function(any, string): void}
 	 */
-	export function embed( embedParams:xp.IEmbedOptions ):PropertyDecorator {
+	export function embed( embedParams:tsembed.IEmbedOptions ):PropertyDecorator {
 		return ( proto:any, propertyName:string ) => {
 			EmbedCore.addPendingAsignment(embedParams, proto, propertyName);
 		}
@@ -130,7 +126,7 @@ module xp {
 			return this._promise || ( this._promise = new Promise(( resolve, reject )=> {
 					var result = EmbedCore.processFile(buffer);
 					this._embedDiskMap = result.map;
-						resolve(result.embedMap);
+					resolve(result.embedMap);
 				}) );
 		}
 
@@ -141,7 +137,7 @@ module xp {
 			if (this._xhr.status == 200) {
 				var result:{ embedMap:EmbedDisk; map:EmbedDisk } = EmbedCore.processFile(this._xhr.response);
 				this._embedDiskMap = result.map;
-					this._resolve(result.embedMap);
+				this._resolve(result.embedMap);
 
 			}
 			else {
@@ -163,7 +159,7 @@ module xp {
 		 * @param file
 		 * @returns {HTMLImageElement}
 		 */
-		export function image( file:IEmbedFile ):HTMLImageElement {
+		export function image( file:IEmbedAsset ):HTMLImageElement {
 
 			var img = dce<HTMLImageElement>('img');
 			img.src = EmbedCore.createObjectURL(file);
@@ -176,7 +172,7 @@ module xp {
 		 * @param file
 		 * @returns {HTMLScriptElement}
 		 */
-		export function script( file:IEmbedFile ):HTMLScriptElement {
+		export function script( file:IEmbedAsset ):HTMLScriptElement {
 
 			var script = dce<HTMLScriptElement>('script');
 			var onload = ()=>{ script.removeEventListener('load',onload ); EmbedCore.processPendingAssignments(); }
@@ -190,7 +186,7 @@ module xp {
 		 * @param file
 		 * @returns {HTMLStyleElement}
 		 */
-		export function style( file:IEmbedFile ):HTMLStyleElement {
+		export function style( file:IEmbedAsset ):HTMLStyleElement {
 
 			var style = dce<HTMLStyleElement>('style');
 			style.type = 'text/css';
@@ -203,7 +199,7 @@ module xp {
 		 * @param file
 		 * @returns {HTMLSourceElement}
 		 */
-		export function source( file:IEmbedFile ):HTMLSourceElement {
+		export function source( file:IEmbedAsset ):HTMLSourceElement {
 
 			var source = dce<HTMLSourceElement>("source");
 			source.type = file.mime;
@@ -216,7 +212,7 @@ module xp {
 		 * @param file
 		 * @returns {string}
 		 */
-		export function objectURL( file:IEmbedFile ):string {
+		export function objectURL( file:IEmbedAsset ):string {
 			return EmbedCore.createObjectURL(file);
 		}
 	}
@@ -239,30 +235,26 @@ module xp {
 		}
 
 		/**
-		 * Creates a new image from the provided dataURL
-		 * If dataURL is a blob reference and revoke option is true the blob is released also any successive calls to this method with the provided dataURL will **silently** fail.
+		 * Creates a new image from the provided objectURL
 		 * @param dataURL dddd
 		 * @param revoke
 		 * @returns {*}
 		 */
-		public static imageFromDataURL( dataURL:string, revoke:boolean = false ):HTMLImageElement {
+		public static imageFromObjectURL( objectURL:string ):HTMLImageElement {
 			var img = dce<HTMLImageElement>('img');
-			//if ( revoke && dataURL.indexOf('blob:')==0 ) {
-				img.onload = ()=>{
-					//alert(1)
-					//EmbedCore.URL.revokeObjectURL( dataURL );
-				}
-			//}
-			img.src = dataURL;
+			img.onload = ()=>{
+				EmbedCore.URL.revokeObjectURL( objectURL );
+			}
+			img.src = objectURL;
 			return img;
 		}
 
 		/**
-		 * Gets the IEmbedFile for the provided symbol
+		 * Gets the IEmbedAsset for the provided symbol
 		 * @param src
 		 * @returns {IEmbedDiskFile}
 		 */
-		public static getSymbol( symbol:string ):IEmbedFile {
+		public static getSymbol( symbol:string ):IEmbedAsset {
 			return EmbedCore.MAP[Object.keys(EmbedCore.MAP).filter(( key:any )=> {
 					return EmbedCore.MAP[key].symbol == symbol;
 				})[0]] || null;
@@ -279,11 +271,11 @@ module xp {
 		}
 
 		/**
-		 * Gets the IEmbedFile for the provided asset src file
+		 * Gets the IEmbedAsset for the provided asset src file
 		 * @param src
 		 * @returns {IEmbedDiskFile}
 		 */
-		public static getFile( src:string ):IEmbedFile {
+		public static getAsset( src:string ):IEmbedAsset {
 			return EmbedCore.MAP[EmbedCore.PJWHash(src)]
 		}
 	}
@@ -311,7 +303,7 @@ module xp {
 		 * @param file
 		 * @returns {string}
 		 */
-		public static createObjectURL( file:IEmbedFile ):string {
+		public static createObjectURL( file:IEmbedAsset ):string {
 			return EmbedCore.URL.createObjectURL(EmbedCore.getBlobContent(file));
 		}
 
@@ -320,7 +312,7 @@ module xp {
 		 * @param file
 		 * @returns {any}
 		 */
-		public static getBlobContent( file:IEmbedFile ):Blob {
+		public static getBlobContent( file:IEmbedAsset ):Blob {
 			var blobContent:any = file.content;
 			var blobResult:any;
 			var BB = "BlobBuilder";
@@ -414,7 +406,7 @@ module xp {
 				return decParam.done == false;
 			}).forEach(( decParam:IEmbedPendingAssignment )=> {
 				decParam.done = true;
-				var file:IEmbedFile = EmbedUtils.getFile(decParam.params.src);
+				var file:IEmbedAsset = EmbedUtils.getAsset(decParam.params.src);
 				decParam.proto[decParam.propertyName] = decParam.params.as ?
 					EmbedCore.revokeURL(decParam.params.as(file)) : file.content;
 			});
@@ -483,7 +475,7 @@ module xp {
 		 * @param data
 		 * @param file
 		 */
-		public static readBinary( data:ArrayBuffer, file:IEmbedFile ):void {
+		public static readBinary( data:ArrayBuffer, file:IEmbedAsset ):void {
 			file.content = EmbedCore.extractBuffer(data, file.start, file.length);
 		}
 
@@ -492,7 +484,7 @@ module xp {
 		 * @param data
 		 * @param file
 		 */
-		public static readUTF8( data:ArrayBuffer, file:IEmbedFile ):void {
+		public static readUTF8( data:ArrayBuffer, file:IEmbedAsset ):void {
 			file.content = EmbedCore.UTF8ArrayToString(EmbedCore.extractBuffer(data, file.start, file.length));
 		}
 
@@ -517,7 +509,7 @@ module xp {
 		 * @param data
 		 * @param diskMapObject
 		 */
-		public static unpack(data:ArrayBuffer, file:IEmbedFile ) {
+		public static unpack(data:ArrayBuffer, file:IEmbedAsset ) {
 			EmbedCore.decompressFormat[file.format](data, file);
 		}
 
