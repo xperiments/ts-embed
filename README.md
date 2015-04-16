@@ -8,8 +8,8 @@ The advantage of embedding assets is that are included in a single **.tse** file
 * [install](#install)
 * [usage](#usage)
 * [loading](#loading)
+* [ts-embed API](http://www.xperiments.io/ts-embed/)
 * [grunt-ts-embed task](#grunt-ts-embed)
-
 
 ## Install ##
 

@@ -1,6 +1,6 @@
 {
   "name": "ts-embed",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "Gruntfile.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-text-replace": "^0.4.0",
     "grunt-ts": "^4.0.1",
-    "grunt-ts-embed": "0.0.3-alpha.1",
+    "grunt-ts-embed": "0.0.4",
     "grunt-typedoc": "^0.2.2",
     "strip-comments": "^0.3.2",
     "typescript": "^1.5.0-alpha"

@@ -125,7 +125,7 @@ module.exports = function (grunt) {
                 }
             },
             clean:{
-                doc: ["tmp1"]
+                doc: ["tmp"]
             }
         });
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -139,8 +139,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-typedoc');
 
     grunt.registerTask("default", ["ts:build","watch"]);
+    grunt.registerTask("doc", ["ts:build","copy:doc","replace:doc","typedoc:release","clean:doc"]);
     grunt.registerTask("demo", ["copy:definitions","replace:definitions","ts:demo","ts:basicExample","embed:demo"]);
     grunt.registerTask("compile", ["ts:build","uglify:js"]);
-    grunt.registerTask("release", ["compile","demo"]);
-    grunt.registerTask("doc", ["ts:build","copy:doc","replace:doc","typedoc:release","clean:doc"]);
+    grunt.registerTask("build", ["compile","demo","doc"]);
+
 }

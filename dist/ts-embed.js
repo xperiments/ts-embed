@@ -4,11 +4,11 @@ var tsembed;
     /**
      * Types of internal data storage formats
      */
-    (function (EmbedType) {
-        EmbedType[EmbedType["binary"] = 0] = "binary";
-        EmbedType[EmbedType["utf8"] = 1] = "utf8";
-    })(tsembed.EmbedType || (tsembed.EmbedType = {}));
-    var EmbedType = tsembed.EmbedType;
+    (function (EmbedFormat) {
+        EmbedFormat[EmbedFormat["binary"] = 0] = "binary";
+        EmbedFormat[EmbedFormat["utf8"] = 1] = "utf8";
+    })(tsembed.EmbedFormat || (tsembed.EmbedFormat = {}));
+    var EmbedFormat = tsembed.EmbedFormat;
     /**
      * The @embed decorator gets the specified source asset file from an ts-embed library and assigns it to the decorated property.
      * @param embedParams
@@ -429,8 +429,8 @@ var tsembed;
         EmbedCore.MAP = {};
         EmbedCore.decompressFormat = (function () {
             var decompressFormat = {};
-            decompressFormat[EmbedType.utf8] = EmbedCore.readUTF8;
-            decompressFormat[EmbedType.binary] = EmbedCore.readBinary;
+            decompressFormat[EmbedFormat.utf8] = EmbedCore.readUTF8;
+            decompressFormat[EmbedFormat.binary] = EmbedCore.readBinary;
             return decompressFormat;
         })();
         EmbedCore.pendingAssignments = [];

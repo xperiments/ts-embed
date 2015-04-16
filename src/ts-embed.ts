@@ -6,7 +6,7 @@ module tsembed {
 	/**
 	 * Types of internal data storage formats
 	 */
-	export enum EmbedType
+	export enum EmbedFormat
 	{
 		binary,
 		utf8
@@ -17,7 +17,7 @@ module tsembed {
 	 * Representation of file descriptor
 	 */
 	export interface IEmbedAsset {
-		format:EmbedType;
+		format:EmbedFormat;
 		mime:string;
 		start:number;
 		length:number;
@@ -40,7 +40,7 @@ module tsembed {
 	 */
 	export interface IEmbedOptions {
 		src:string;
-		format?:tsembed.EmbedType;
+		format?:EmbedFormat;
 		as?:IEmbedExtractor;
 		symbol?:string;
 		mime?:string;
@@ -464,8 +464,8 @@ module tsembed {
 		public static MAP:EmbedDisk = {};
 		public static decompressFormat:any = (()=> {
 			var decompressFormat = {};
-			decompressFormat[EmbedType.utf8] = EmbedCore.readUTF8;
-			decompressFormat[EmbedType.binary] = EmbedCore.readBinary;
+			decompressFormat[EmbedFormat.utf8] = EmbedCore.readUTF8;
+			decompressFormat[EmbedFormat.binary] = EmbedCore.readBinary;
 			return decompressFormat;
 		})();
 		public static pendingAssignments:IEmbedPendingAssignment[] = [];

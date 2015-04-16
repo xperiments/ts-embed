@@ -3,7 +3,7 @@ declare module tsembed {
     /**
      * Types of internal data storage formats
      */
-    enum EmbedType {
+    enum EmbedFormat {
         binary = 0,
         utf8 = 1,
     }
@@ -11,7 +11,7 @@ declare module tsembed {
      * Representation of file descriptor
      */
     interface IEmbedAsset {
-        format: EmbedType;
+        format: EmbedFormat;
         mime: string;
         start: number;
         length: number;
@@ -31,7 +31,7 @@ declare module tsembed {
      */
     interface IEmbedOptions {
         src: string;
-        format?: tsembed.EmbedType;
+        format?: EmbedFormat;
         as?: IEmbedExtractor;
         symbol?: string;
         mime?: string;
