@@ -958,6 +958,9 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
 							<a href="index.html#tsembed.embedcore.decompressformat" class="tsd-kind-icon">decompress<wbr>Format</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
+							<a href="index.html#tsembed.embedcore.getbase64memoized" class="tsd-kind-icon">get<wbr>Base64<wbr>Memoized</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
 							<a href="index.html#tsembed.embedcore.pendingassignments" class="tsd-kind-icon">pending<wbr>Assignments</a>
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
@@ -976,6 +979,9 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
 							<a href="index.html#tsembed.embedcore.extractbuffer" class="tsd-kind-icon">extract<wbr>Buffer</a>
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
+							<a href="index.html#tsembed.embedcore.getbase64" class="tsd-kind-icon">get<wbr>Base64</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
 							<a href="index.html#tsembed.embedcore.getblobcontent" class="tsd-kind-icon">get<wbr>Blob<wbr>Content</a>
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
@@ -989,6 +995,9 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
 							<a href="index.html#tsembed.embedcore.readutf8" class="tsd-kind-icon">readUTF8</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
+							<a href="index.html#tsembed.embedcore.revokeobjecturl" class="tsd-kind-icon">revoke<wbr>ObjectURL</a>
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
 							<a href="index.html#tsembed.embedcore.revokeurl" class="tsd-kind-icon">revokeURL</a>
@@ -1119,11 +1128,20 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
 						</li>
 					</ul>
 				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+					<a href="index.html#tsembed.base64encarr" class="tsd-kind-icon">base64<wbr>Enc<wbr>Arr</a>
+				</li>
 				<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-not-exported">
 					<a href="index.html#tsembed.dce" class="tsd-kind-icon">dce</a>
 				</li>
 				<li class=" tsd-kind-function tsd-parent-kind-module">
 					<a href="index.html#tsembed.embed" class="tsd-kind-icon">embed</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-not-exported">
+					<a href="index.html#tsembed.memoize" class="tsd-kind-icon">memoize</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+					<a href="index.html#tsembed.uint6tob64" class="tsd-kind-icon">uint6<wbr>ToB64</a>
 				</li>
 			</ul>
 		</li>
@@ -1135,6 +1153,95 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
 			<h1 id="ts-embed">ts-embed</h1>
 			<p><strong>ts-embed</strong> is a set of Typescript code &amp; tools to create compacted assets libraries (audio, video, text). It takes some inspiration from the as3 flex [Embed(source=&quot;file.png&quot;)] syntax.</p>
 			<p>The advantage of embedding assets is that are included in a single <strong>.tse</strong> file, and can be accessed faster than if the application has to load every asset individually.</p>
+			<h3 id="browser-support">Browser support</h3>
+			<!--browser-badge-->
+			<table>
+				<thead>
+					<tr>
+						<th><img src="https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/ie.svg" alt="explorer"></th>
+						<th><img src="https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/firefox.svg" alt="firefox"></th>
+						<th><img src="https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/chrome.svg" alt="chrome"></th>
+						<th><img src="https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/safari.svg" alt="safari"></th>
+						<th><img src="https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/opera.svg" alt="opera"></th>
+						<th><img src="https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/ios.svg" alt="iphone"></th>
+						<th><img src="https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/android.svg" alt="android"></th>
+						<th><img src="https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/android.svg" alt="android chrome"> <img src="https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/chrome.svg" alt="android chrome"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><sub> ⛔ 8.0 </sub></td>
+						<td><sub> ✅ 13.0 </sub></td>
+						<td><sub> ✅ 20.0 </sub></td>
+						<td><sub> ✅ 6 </sub></td>
+						<td><sub> ✅ 11.6 </sub></td>
+						<td><sub> ✅ 6.0 </sub></td>
+						<td><sub> ✅ 4.0 </sub></td>
+						<td><sub> ✅ 42 </sub></td>
+					</tr>
+					<tr>
+						<td><sub> ✅ 9.0 </sub></td>
+						<td><sub> ✅ 34.0 </sub></td>
+						<td><sub> ✅ 39.0 </sub></td>
+						<td><sub> ✅ 7 </sub></td>
+						<td><sub> ✅ 12.0 </sub></td>
+						<td><sub> ✅ 7.0 </sub></td>
+						<td><sub> ✅ 4.1 </sub></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><sub> ✅ 35.0 </sub></td>
+						<td><sub> ✅ 40.0 </sub></td>
+						<td><sub> ✅ 8 </sub></td>
+						<td><sub> ✅ 21.10 </sub></td>
+						<td><sub> ✅ 8.0 </sub></td>
+						<td><sub> ✅ 4.2 </sub></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><sub> ✅ 36.0 </sub></td>
+						<td><sub> ✅ 41.0 </sub></td>
+						<td><sub> ✅ 6.1 </sub></td>
+						<td><sub> ✅ 12.12 </sub></td>
+						<td></td>
+						<td><sub> ✅ 4.3 </sub></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><sub> ✅ 37.0 </sub></td>
+						<td><sub> ✅ 42.0 </sub></td>
+						<td><sub> ✅ 7.1 </sub></td>
+						<td><sub> ✅ 12.14 </sub></td>
+						<td></td>
+						<td><sub> ✅ 4.4 </sub></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><sub> ✅ 12.15 </sub></td>
+						<td></td>
+						<td><sub> ✅ 5.0 </sub></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><sub> ✅ 5.1 </sub></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			<!--!browser-badge-->
 			<h2 id="table-of-contents">Table of contents</h2>
 			<ul>
 				<li><a href="#install">install</a></li>
@@ -1198,7 +1305,6 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
 					</tr>
 				</tbody>
 			</table>
-			<p>1</p>
 			<h3 id="-embed-src-">@embed{src}</h3>
 			<p>Specifies the path of the asset to embed with a path relative to the file containing the @embed statement.</p>
 			<h3 id="-embed-as-">@embed{as}</h3>
@@ -1419,7 +1525,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<div class="tsd-signature tsd-kind-icon">Embed<wbr>Type<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ts-embed.ts:155</li>
+							<li>Defined in ts-embed.ts:154</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1437,7 +1543,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:162</li>
+										<li>Defined in ts-embed.ts:161</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1465,7 +1571,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:215</li>
+										<li>Defined in ts-embed.ts:218</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1493,7 +1599,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:175</li>
+										<li>Defined in ts-embed.ts:174</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1522,7 +1628,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:202</li>
+										<li>Defined in ts-embed.ts:205</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1550,7 +1656,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:189</li>
+										<li>Defined in ts-embed.ts:192</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1575,7 +1681,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<div class="tsd-signature tsd-kind-icon">Embed<wbr>Format<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ts-embed.ts:9</li>
+							<li>Defined in ts-embed.ts:8</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1589,7 +1695,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">binary<span class="tsd-signature-symbol">:</span> </div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:11</li>
+								<li>Defined in ts-embed.ts:10</li>
 							</ul>
 						</aside>
 					</section>
@@ -1599,7 +1705,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">utf8<span class="tsd-signature-symbol">:</span> </div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:12</li>
+								<li>Defined in ts-embed.ts:11</li>
 							</ul>
 						</aside>
 					</section>
@@ -1610,7 +1716,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<div class="tsd-signature tsd-kind-icon">Embed<wbr>Core<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ts-embed.ts:286</li>
+							<li>Defined in ts-embed.ts:295</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1624,7 +1730,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">MAP<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.embeddisk" class="tsd-signature-type">EmbedDisk</a></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:464</li>
+								<li>Defined in ts-embed.ts:499</li>
 							</ul>
 						</aside>
 					</section>
@@ -1634,7 +1740,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">URL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:538</li>
+								<li>Defined in ts-embed.ts:570</li>
 							</ul>
 						</aside>
 					</section>
@@ -1644,7 +1750,17 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">decompress<wbr>Format<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:465</li>
+								<li>Defined in ts-embed.ts:500</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
+						<a name="tsembed.embedcore.getbase64memoized" class="tsd-anchor"></a>
+						<h3>get<wbr>Base64<wbr>Memoized</h3>
+						<div class="tsd-signature tsd-kind-icon">get<wbr>Base64<wbr>Memoized<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">__function</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in ts-embed.ts:340</li>
 							</ul>
 						</aside>
 					</section>
@@ -1654,7 +1770,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">pending<wbr>Assignments<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.iembedpendingassignment" class="tsd-signature-type">IEmbedPendingAssignment</a><span class="tsd-signature-symbol">[]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:471</li>
+								<li>Defined in ts-embed.ts:506</li>
 							</ul>
 						</aside>
 					</section>
@@ -1668,7 +1784,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:522</li>
+										<li>Defined in ts-embed.ts:554</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1700,7 +1816,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:423</li>
+										<li>Defined in ts-embed.ts:458</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1732,7 +1848,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:357</li>
+										<li>Defined in ts-embed.ts:389</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1769,7 +1885,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:306</li>
+										<li>Defined in ts-embed.ts:325</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1797,7 +1913,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:498</li>
+										<li>Defined in ts-embed.ts:534</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1822,6 +1938,29 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						</ul>
 					</section>
 					<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
+						<a name="tsembed.embedcore.getbase64" class="tsd-anchor"></a>
+						<h3>get<wbr>Base64</h3>
+						<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
+							<li class="tsd-signature tsd-kind-icon">get<wbr>Base64<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><a href="index.html#tsembed.iembedasset" class="tsd-signature-type">IEmbedAsset</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						</ul>
+						<ul class="tsd-descriptions">
+							<li class="tsd-description">
+								<aside class="tsd-sources">
+									<ul>
+										<li>Defined in ts-embed.ts:335</li>
+									</ul>
+								</aside>
+								<h4 class="tsd-parameters-title">Parameters</h4>
+								<ul class="tsd-parameters">
+									<li>
+										<h5>file: <a href="index.html#tsembed.iembedasset" class="tsd-signature-type">IEmbedAsset</a></h5>
+									</li>
+								</ul>
+								<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							</li>
+						</ul>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
 						<a name="tsembed.embedcore.getblobcontent" class="tsd-anchor"></a>
 						<h3>get<wbr>Blob<wbr>Content</h3>
 						<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
@@ -1831,7 +1970,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:315</li>
+										<li>Defined in ts-embed.ts:347</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1859,7 +1998,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:378</li>
+										<li>Defined in ts-embed.ts:410</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1906,7 +2045,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:403</li>
+										<li>Defined in ts-embed.ts:438</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1928,7 +2067,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:478</li>
+										<li>Defined in ts-embed.ts:513</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1961,7 +2100,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:487</li>
+										<li>Defined in ts-embed.ts:522</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1985,6 +2124,36 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						</ul>
 					</section>
 					<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
+						<a name="tsembed.embedcore.revokeobjecturl" class="tsd-anchor"></a>
+						<h3>revoke<wbr>ObjectURL</h3>
+						<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
+							<li class="tsd-signature tsd-kind-icon">revoke<wbr>ObjectURL<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						</ul>
+						<ul class="tsd-descriptions">
+							<li class="tsd-description">
+								<aside class="tsd-sources">
+									<ul>
+										<li>Defined in ts-embed.ts:300</li>
+									</ul>
+								</aside>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Revokes if possible the provided blob object url and returns it</p>
+									</div>
+								</div>
+								<h4 class="tsd-parameters-title">Parameters</h4>
+								<ul class="tsd-parameters">
+									<li>
+										<h5>target: <span class="tsd-signature-type">string</span></h5>
+										<div class="tsd-comment tsd-typography">
+										</div>
+									</li>
+								</ul>
+								<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							</li>
+						</ul>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
 						<a name="tsembed.embedcore.revokeurl" class="tsd-anchor"></a>
 						<h3>revokeURL</h3>
 						<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-not-exported">
@@ -1994,7 +2163,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:292</li>
+										<li>Defined in ts-embed.ts:311</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -2024,7 +2193,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:512</li>
+										<li>Defined in ts-embed.ts:544</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -2052,7 +2221,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<div class="tsd-signature tsd-kind-icon">Embed<wbr>Loader<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ts-embed.ts:85</li>
+							<li>Defined in ts-embed.ts:84</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2066,7 +2235,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">_embed<wbr>Disk<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.embeddisk" class="tsd-signature-type">EmbedDisk</a></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:92</li>
+								<li>Defined in ts-embed.ts:91</li>
 							</ul>
 						</aside>
 					</section>
@@ -2076,7 +2245,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">_promise<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.html#tsembed.embeddisk" class="tsd-signature-type">EmbedDisk</a><span class="tsd-signature-symbol">&gt;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:91</li>
+								<li>Defined in ts-embed.ts:90</li>
 							</ul>
 						</aside>
 					</section>
@@ -2086,7 +2255,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">_reject<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:90</li>
+								<li>Defined in ts-embed.ts:89</li>
 							</ul>
 						</aside>
 					</section>
@@ -2096,7 +2265,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">_resolve<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:89</li>
+								<li>Defined in ts-embed.ts:88</li>
 							</ul>
 						</aside>
 					</section>
@@ -2106,7 +2275,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">_xhr<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">XMLHttpRequest</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:88</li>
+								<li>Defined in ts-embed.ts:87</li>
 							</ul>
 						</aside>
 					</section>
@@ -2116,7 +2285,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:87</li>
+								<li>Defined in ts-embed.ts:86</li>
 							</ul>
 						</aside>
 					</section>
@@ -2130,7 +2299,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:136</li>
+										<li>Defined in ts-embed.ts:135</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -2149,7 +2318,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:100</li>
+										<li>Defined in ts-embed.ts:99</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -2178,7 +2347,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:125</li>
+										<li>Defined in ts-embed.ts:124</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -2204,7 +2373,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<div class="tsd-signature tsd-kind-icon">Embed<wbr>Utils<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ts-embed.ts:220</li>
+							<li>Defined in ts-embed.ts:223</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
@@ -2217,7 +2386,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:278</li>
+										<li>Defined in ts-embed.ts:287</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -2245,7 +2414,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:257</li>
+										<li>Defined in ts-embed.ts:266</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -2273,7 +2442,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:269</li>
+										<li>Defined in ts-embed.ts:278</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -2304,7 +2473,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:243</li>
+										<li>Defined in ts-embed.ts:252</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -2332,7 +2501,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in ts-embed.ts:227</li>
+										<li>Defined in ts-embed.ts:230</li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -2357,7 +2526,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<div class="tsd-signature tsd-kind-icon">Embed<wbr>Disk<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ts-embed.ts:33</li>
+							<li>Defined in ts-embed.ts:32</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2373,7 +2542,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<div class="tsd-signature tsd-kind-icon">IEmbed<wbr>Asset<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ts-embed.ts:19</li>
+							<li>Defined in ts-embed.ts:18</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2387,7 +2556,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:24</li>
+								<li>Defined in ts-embed.ts:23</li>
 							</ul>
 						</aside>
 					</section>
@@ -2397,7 +2566,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">format<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.embedformat" class="tsd-signature-type">EmbedFormat</a></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:20</li>
+								<li>Defined in ts-embed.ts:19</li>
 							</ul>
 						</aside>
 					</section>
@@ -2407,7 +2576,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:23</li>
+								<li>Defined in ts-embed.ts:22</li>
 							</ul>
 						</aside>
 					</section>
@@ -2417,7 +2586,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">mime<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:21</li>
+								<li>Defined in ts-embed.ts:20</li>
 							</ul>
 						</aside>
 					</section>
@@ -2427,7 +2596,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">start<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:22</li>
+								<li>Defined in ts-embed.ts:21</li>
 							</ul>
 						</aside>
 					</section>
@@ -2437,7 +2606,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">symbol<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:25</li>
+								<li>Defined in ts-embed.ts:24</li>
 							</ul>
 						</aside>
 					</section>
@@ -2452,7 +2621,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in ts-embed.ts:53</li>
+									<li>Defined in ts-embed.ts:52</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2476,7 +2645,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<div class="tsd-signature tsd-kind-icon">IEmbed<wbr>Options<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ts-embed.ts:41</li>
+							<li>Defined in ts-embed.ts:40</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2490,7 +2659,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">as<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.iembedextractor" class="tsd-signature-type">IEmbedExtractor</a></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:44</li>
+								<li>Defined in ts-embed.ts:43</li>
 							</ul>
 						</aside>
 					</section>
@@ -2500,7 +2669,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">format<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.embedformat" class="tsd-signature-type">EmbedFormat</a></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:43</li>
+								<li>Defined in ts-embed.ts:42</li>
 							</ul>
 						</aside>
 					</section>
@@ -2510,7 +2679,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">mime<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:46</li>
+								<li>Defined in ts-embed.ts:45</li>
 							</ul>
 						</aside>
 					</section>
@@ -2520,7 +2689,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:47</li>
+								<li>Defined in ts-embed.ts:46</li>
 							</ul>
 						</aside>
 					</section>
@@ -2530,7 +2699,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">src<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:42</li>
+								<li>Defined in ts-embed.ts:41</li>
 							</ul>
 						</aside>
 					</section>
@@ -2540,7 +2709,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">symbol<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:45</li>
+								<li>Defined in ts-embed.ts:44</li>
 							</ul>
 						</aside>
 					</section>
@@ -2551,7 +2720,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 					<div class="tsd-signature tsd-kind-icon">IEmbed<wbr>Pending<wbr>Assignment<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in ts-embed.ts:62</li>
+							<li>Defined in ts-embed.ts:61</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2567,7 +2736,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">done<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:66</li>
+								<li>Defined in ts-embed.ts:65</li>
 							</ul>
 						</aside>
 					</section>
@@ -2577,7 +2746,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">params<span class="tsd-signature-symbol">:</span> <a href="index.html#tsembed.iembedoptions" class="tsd-signature-type">IEmbedOptions</a></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:63</li>
+								<li>Defined in ts-embed.ts:62</li>
 							</ul>
 						</aside>
 					</section>
@@ -2587,7 +2756,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">property<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:65</li>
+								<li>Defined in ts-embed.ts:64</li>
 							</ul>
 						</aside>
 					</section>
@@ -2597,10 +2766,38 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<div class="tsd-signature tsd-kind-icon">proto<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ts-embed.ts:64</li>
+								<li>Defined in ts-embed.ts:63</li>
 							</ul>
 						</aside>
 					</section>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+					<a name="tsembed.base64encarr" class="tsd-anchor"></a>
+					<h3>base64<wbr>Enc<wbr>Arr</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">base64<wbr>Enc<wbr>Arr<span class="tsd-signature-symbol">(</span>aBytes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in ts-embed.ts:606</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding">https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>aBytes: <span class="tsd-signature-type">Uint8Array</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-not-exported">
 					<a name="tsembed.dce" class="tsd-anchor"></a>
@@ -2612,7 +2809,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in ts-embed.ts:542</li>
+									<li>Defined in ts-embed.ts:574</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2641,7 +2838,7 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in ts-embed.ts:75</li>
+									<li>Defined in ts-embed.ts:74</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2656,6 +2853,63 @@ grunt.loadNpmTasks(<span class="hljs-string">'grunt-ts-embed'</span>);
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-not-exported">
+					<a name="tsembed.memoize" class="tsd-anchor"></a>
+					<h3>memoize</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">memoize&lt;T&gt;<span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">__function</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in ts-embed.ts:633</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>fn: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">__function</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+					<a name="tsembed.uint6tob64" class="tsd-anchor"></a>
+					<h3>uint6<wbr>ToB64</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">uint6<wbr>ToB64<span class="tsd-signature-symbol">(</span>nUint6<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in ts-embed.ts:584</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding">https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>nUint6: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
