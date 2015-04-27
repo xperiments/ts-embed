@@ -7,17 +7,15 @@
 
 </head>
 <body>
+<script src="js/ts-embed-polyfills.js"></script>
 <script src="js/ts-embed.min.js"></script>
 <script src="src/EmbedSamples.js"></script>
 <script>
     var loader = new tsembed.EmbedLoader();
     loader.load('bin/embedOutput.tse').then(function(){
-
         EmbedUtils.injectScript(EmbedSamples.BasicExample).then(function(){
             new BasicExample();
         });
-
-
     });
 </script>
 </body>

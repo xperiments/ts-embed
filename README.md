@@ -3,6 +3,21 @@
 
 The advantage of embedding assets is that are included in a single **.tse** file, and can be accessed faster than if the application has to load every asset individually.
 
+### Browser support
+
+<!--browser-badge-->
+![explorer](https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/ie.svg)|![firefox](https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/firefox.svg)|![chrome](https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/chrome.svg)|![safari](https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/safari.svg)|![opera](https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/opera.svg)|![iphone](https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/ios.svg)|![android](https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/android.svg)|![android chrome](https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/android.svg) ![android chrome](https://rawgit.com/xperiments/grunt-browser-mdbagde/master/resources/chrome.svg)
+---|---|---|---|---|---|---|---
+<sub> ⛔ 8.0 </sub>|<sub> ✅ 13.0 </sub>|<sub> ✅ 20.0 </sub>|<sub> ✅ 6 </sub>|<sub> ✅ 11.6 </sub>|<sub> ✅ 6.0 </sub>|<sub> ✅ 4.0 </sub>|<sub> ✅ 42 </sub>
+<sub> ✅ 9.0 </sub>|<sub> ✅ 34.0 </sub>|<sub> ✅ 39.0 </sub>|<sub> ✅ 7 </sub>|<sub> ✅ 12.0 </sub>|<sub> ✅ 7.0 </sub>|<sub> ✅ 4.1 </sub>| 
+ |<sub> ✅ 35.0 </sub>|<sub> ✅ 40.0 </sub>|<sub> ✅ 8 </sub>|<sub> ✅ 21.10 </sub>|<sub> ✅ 8.0 </sub>|<sub> ✅ 4.2 </sub>| 
+ |<sub> ✅ 36.0 </sub>|<sub> ✅ 41.0 </sub>|<sub> ✅ 6.1 </sub>|<sub> ✅ 12.12 </sub>| |<sub> ✅ 4.3 </sub>| 
+ |<sub> ✅ 37.0 </sub>|<sub> ✅ 42.0 </sub>|<sub> ✅ 7.1 </sub>|<sub> ✅ 12.14 </sub>| |<sub> ✅ 4.4 </sub>| 
+ | | | |<sub> ✅ 12.15 </sub>| |<sub> ✅ 5.0 </sub>| 
+ | | | | | |<sub> ✅ 5.1 </sub>| 
+<!--!browser-badge-->
+
+
 ## Table of contents ##
 
 * [install](#install)
@@ -56,7 +71,7 @@ param  | required | description
 **[symbol](#@embed{symbol})** | false | A unique identifier name used to retrieve an embed asset at runtime.
 **[mime](#@embed{mime})**	| false | Specifies the mime type of the asset. [Supported MIME types](#embed-mime)
 
-1
+
 ### @embed{src} ###
 Specifies the path of the asset to embed with a path relative to the file containing the @embed statement.
 
@@ -218,3 +233,6 @@ grunt.initConfig(
 );
 grunt.loadNpmTasks('grunt-ts-embed');
 ~~~
+
+
+

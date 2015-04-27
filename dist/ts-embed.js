@@ -104,7 +104,10 @@ var tsembed;
          */
         function script(file) {
             var script = dce('script');
-            var onload = function () { script.removeEventListener('load', onload); EmbedCore.processPendingAssignments(); };
+            var onload = function () {
+                script.removeEventListener('load', onload);
+                EmbedCore.processPendingAssignments();
+            };
             script.addEventListener('load', onload, false);
             script.src = EmbedCore.createObjectURL(file);
             return script;
@@ -154,8 +157,14 @@ var tsembed;
          */
         EmbedUtils.injectScript = function (element) {
             return new Promise(function (resolve, reject) {
-                element.addEventListener('load', function onload() { element.removeEventListener('load', onload); resolve(element); }, false);
-                element.addEventListener('error', function onerror() { element.removeEventListener('error', onerror); reject(element); }, false);
+                element.addEventListener('load', function onload() {
+                    element.removeEventListener('load', onload);
+                    resolve(element);
+                }, false);
+                element.addEventListener('error', function onerror() {
+                    element.removeEventListener('error', onerror);
+                    reject(element);
+                }, false);
                 document.head.appendChild(element);
                 return element;
             });
@@ -169,7 +178,7 @@ var tsembed;
         EmbedUtils.imageFromObjectURL = function (objectURL) {
             var img = dce('img');
             img.onload = function () {
-                EmbedCore.URL.revokeObjectURL(objectURL);
+                EmbedCore.revokeObjectURL(objectURL);
             };
             img.src = objectURL;
             return img;
@@ -211,6 +220,15 @@ var tsembed;
         function EmbedCore() {
         }
         /**
+         * Revokes if possible the provided blob object url and returns it
+         * @param target
+         */
+        EmbedCore.revokeObjectURL = function (target) {
+            if (target.indexOf('blob:') == 0) {
+                EmbedCore.URL.revokeObjectURL(target);
+            }
+        };
+        /**
          * Revokes if possible the provided blob target source and returns it
          * @param target
          */
@@ -228,7 +246,16 @@ var tsembed;
          * @returns {string}
          */
         EmbedCore.createObjectURL = function (file) {
-            return EmbedCore.URL.createObjectURL(EmbedCore.getBlobContent(file));
+            if (EmbedCore.URL) {
+                return EmbedCore.URL.createObjectURL(EmbedCore.getBlobContent(file));
+            }
+            else {
+                return EmbedCore.getBase64Memoized(file);
+            }
+        };
+        EmbedCore.getBase64 = function (file) {
+            var b64 = typeof file.content === "string" ? window.btoa(file.content) : base64EncArr(file.content);
+            return "data:" + file.mime + ";base64," + b64;
         };
         /**
          * Gets a blob for the provided EmbedType File
@@ -251,7 +278,7 @@ var tsembed;
                     || window['MS' + BB];
                 if (e.name == 'TypeError' && window[BB]) {
                     var bb = new window[BB]();
-                    bb.append([typeof blobContent === "string" ? blobContent : blobContent.buffer]);
+                    bb.append(typeof blobContent === "string" ? [blobContent] : blobContent.buffer);
                     blobResult = bb.getBlob(file.mime);
                     return blobResult;
                 }
@@ -291,8 +318,10 @@ var tsembed;
          * @returns {EmbedDisk}
          */
         EmbedCore.processFile = function (data) {
-            var view = new DataView(data);
-            var diskMapSize = view.getUint32(0);
+            // read head size getUint32
+            var u8 = new Uint8Array(data);
+            var b0 = u8[0], b1 = u8[1], b2 = u8[2], b3 = u8[3];
+            var diskMapSize = (b0 << 24) + (b1 << 16) + (b2 << 8) + b3;
             var diskMapBytes = this.extractBuffer(data, 4, diskMapSize);
             var jsonMapObject = EmbedCore.UTF8ArrayToString(diskMapBytes);
             var diskMapObject = JSON.parse(jsonMapObject);
@@ -391,10 +420,7 @@ var tsembed;
          * @returns {Uint8Array}
          */
         EmbedCore.extractBuffer = function (src, offset, length) {
-            var dstU8 = new Uint8Array(length);
-            var srcU8 = new Uint8Array(src, offset, length);
-            dstU8.set(srcU8);
-            return dstU8;
+            return new Uint8Array(src.slice(offset, length + offset));
         };
         /**
          * Unpacks the file from the ArrayBuffer
@@ -426,6 +452,7 @@ var tsembed;
             }
             return hash;
         };
+        EmbedCore.getBase64Memoized = memoize(EmbedCore.getBase64);
         EmbedCore.MAP = {};
         EmbedCore.decompressFormat = (function () {
             var decompressFormat = {};
@@ -434,11 +461,75 @@ var tsembed;
             return decompressFormat;
         })();
         EmbedCore.pendingAssignments = [];
-        EmbedCore.URL = window['URL'] || window['webkitURL'];
+        EmbedCore.URL = window['URL'] || window['webkitURL'] || null;
         return EmbedCore;
     })();
     function dce(tagName) {
         return document.createElement(tagName);
+    }
+    /**
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
+     * @param nUint6
+     * @returns {number}
+     */
+    function uint6ToB64(nUint6) {
+        return nUint6 < 26 ?
+            nUint6 + 65
+            : nUint6 < 52 ?
+                nUint6 + 71
+                : nUint6 < 62 ?
+                    nUint6 - 4
+                    : nUint6 === 62 ?
+                        43
+                        : nUint6 === 63 ?
+                            47
+                            :
+                                65;
+    }
+    /**
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
+     * @param aBytes
+     * @returns {string}
+     */
+    function base64EncArr(aBytes) {
+        var nMod3 = 2, sB64Enc = "";
+        for (var nLen = aBytes.length, nUint24 = 0, nIdx = 0; nIdx < nLen; nIdx++) {
+            nMod3 = nIdx % 3;
+            //if (nIdx > 0 && (nIdx * 4 / 3) % 76 === 0) { sB64Enc += "\r\n"; }
+            nUint24 |= aBytes[nIdx] << (16 >>> nMod3 & 24);
+            if (nMod3 === 2 || aBytes.length - nIdx === 1) {
+                sB64Enc += String.fromCharCode(uint6ToB64(nUint24 >>> 18 & 63), uint6ToB64(nUint24 >>> 12 & 63), uint6ToB64(nUint24 >>> 6 & 63), uint6ToB64(nUint24 & 63));
+                nUint24 = 0;
+            }
+        }
+        return sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) + (nMod3 === 2 ? '' : nMod3 === 1 ? '=' : '==');
+    }
+    /*
+     * memoize.js
+     * by @philogb and @addyosmani
+     * with further optimizations by @mathias
+     * and @DmitryBaranovsk
+     * perf tests: http://bit.ly/q3zpG3
+     * Released under an MIT license.
+     * http://addyosmani.com/blog/faster-javascript-memoization/
+     */
+    function memoize(fn) {
+        return function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i - 0] = arguments[_i];
+            }
+            var hash = "", i = args.length;
+            var currentArg = null;
+            while (i--) {
+                currentArg = args[i];
+                hash += (currentArg === Object(currentArg)) ?
+                    JSON.stringify(currentArg) : currentArg;
+                fn.memoize || (fn.memoize = {});
+            }
+            return (hash in fn.memoize) ? fn.memoize[hash] :
+                fn.memoize[hash] = fn.apply(this, args);
+        };
     }
 })(tsembed || (tsembed = {}));
 /// <reference path="typings/es6-promise/es6-promise.d.ts" />

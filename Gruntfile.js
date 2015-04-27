@@ -24,7 +24,7 @@ module.exports = function (grunt) {
                 },
                 demo:{
                     src: ["./demo/src/**/EmbedSamples.ts"],
-                    reference: "./demo/src/reference.ts",  // If specified, generate this file that you can use for your reference management
+                    //reference: "./demo/src/reference.ts",  // If specified, generate this file that you can use for your reference management
                     out: './demo/src/EmbedSamples.js',
                     options: {                         // use to override the default options, http://gruntjs.com/configuring-tasks#options
                         target: 'es5',                 // 'es3' (default) | 'es5'
@@ -38,7 +38,7 @@ module.exports = function (grunt) {
                 },
                 basicExample:{
                     src: ["./demo/src/**/BasicExample.ts"],
-                    reference: "./demo/src/reference.ts",  // If specified, generate this file that you can use for your reference management
+                    //reference: "./demo/src/reference.ts",  // If specified, generate this file that you can use for your reference management
                     out: './demo/src/BasicExample.js',
                     options: {                         // use to override the default options, http://gruntjs.com/configuring-tasks#options
                         target: 'es5',                 // 'es3' (default) | 'es5'
@@ -126,12 +126,39 @@ module.exports = function (grunt) {
             },
             clean:{
                 doc: ["tmp"]
+            },
+            "browser-badge":{
+                readme: {
+                    src:'./README.md',
+                    dest:'./README.md',
+                    browsers:{
+                        "explorer" : { "8.0" : false, "9.0" : true },
+                        "firefox" : { "13.0" : true, "34.0" : true, "35.0" : true, "36.0" : true, "37.0" : true},
+                        "chrome" : { "20.0" : true, "39.0" : true, "40.0" : true, "41.0" : true, "42.0" : true},
+                        "safari" : { "6":true,"6.1":true, "7":true,"7.1":true, "8":true },
+                        "opera" : { "11.6" : true, "12.0" : true, "21.10" : true, "12.12" : true, "12.14" : true, "12.15" : true },
+                        "iphone": { "6.0" : true,"7.0" : true,"8.0" : true },
+                        "android": { "4.0" : true,"4.1" : true,"4.2" : true,"4.3" : true,"4.4" : true,"5.0" : true,"5.1" : true },
+                        "android chrome": { "42" : true }
+                    },
+                    icons:[
+                        'ie',
+                        'firefox',
+                        'chrome',
+                        'safari',
+                        'opera',
+                        'ios',
+                        'android',
+                        'android chrome'
+                    ]
+                }
             }
         });
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-browser-mdbagde');
 
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-ts-embed');

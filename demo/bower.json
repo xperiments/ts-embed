@@ -1,0 +1,19 @@
+{
+  "name": "ts-embed-demo",
+  "version": "0.0.2",
+  "homepage": "https://github.com/xperiments/ts-embed",
+  "authors": [
+    "Pedro Casaubon <xperiments@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "promise-polyfill": "~2.0.2"
+  }
+}
