@@ -1,4 +1,4 @@
-# ts-embed
+# ts-embed v0.0.3
 **ts-embed** is a set of Typescript code & tools to create compacted assets libraries (audio, video, text). It takes some inspiration from the as3 flex [Embed(source="file.png")] syntax.
 
 The advantage of embedding assets is that are included in a single **.tse** file, and can be accessed faster than if the application has to load every asset individually.
@@ -55,7 +55,7 @@ class EmbedTestClass {
 ### Process ###
 Process your source files with the [grunt-ts-embed task](#grunt-ts-embed).
 
-### Loading ###
+### Consuming ###
 [Load](#loading) the library and consume it.
 
 

@@ -7,14 +7,18 @@
 
 </head>
 <body>
-<script src="js/ts-embed-polyfills.js"></script>
+<script src="js/ts-embed-polyfills.min.js"></script>
 <script src="js/ts-embed.min.js"></script>
-<script src="src/EmbedSamples.js"></script>
+<script src="js/EmbedSamples.js"></script>
 <script>
     var loader = new tsembed.EmbedLoader();
     loader.load('bin/embedOutput.tse').then(function(){
-        EmbedUtils.injectScript(EmbedSamples.BasicExample).then(function(){
+        EmbedUtils.injectScript(EmbedSamples.examples).then(function(){
+
             new BasicExample();
+            new ImageExample();
+            new SymbolExample();
+            new CustomExtractorExample();
         });
     });
 </script>

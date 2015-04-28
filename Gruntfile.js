@@ -9,12 +9,11 @@ module.exports = function (grunt) {
             ts: {
                 build: {
                     src: ["./src/**/*.ts"],
-                    reference: "./src/reference.ts",  // If specified, generate this file that you can use for your reference management
                     out: './dist/ts-embed.js',
                     options: {                         // use to override the default options, http://gruntjs.com/configuring-tasks#options
                         target: 'es5',                 // 'es3' (default) | 'es5'
                         module: 'commonjs',            // 'amd' (default) | 'commonjs'
-                        sourceMap: true,               // true (default) | false
+                        sourceMap: false,               // true (default) | false
                         declaration: true,            // true | false (default)
                         removeComments: false,           // true (default) | false
                         fast: "never",
@@ -25,25 +24,30 @@ module.exports = function (grunt) {
                 demo:{
                     src: ["./demo/src/**/EmbedSamples.ts"],
                     //reference: "./demo/src/reference.ts",  // If specified, generate this file that you can use for your reference management
-                    out: './demo/src/EmbedSamples.js',
+                    out: './demo/js/EmbedSamples.js',
                     options: {                         // use to override the default options, http://gruntjs.com/configuring-tasks#options
                         target: 'es5',                 // 'es3' (default) | 'es5'
                         module: 'commonjs',            // 'amd' (default) | 'commonjs'
-                        sourceMap: true,               // true (default) | false
+                        sourceMap: false,               // true (default) | false
                         declaration: false,            // true | false (default)
                         removeComments: true,           // true (default) | false
                         fast: "never",
                         compiler:'./node_modules/typescript/bin/tsc'
                     }
                 },
-                basicExample:{
-                    src: ["./demo/src/**/BasicExample.ts"],
+                examples:{
+                    src: [
+                        "./demo/src/**/BasicExample.ts",
+                        "./demo/src/**/ImageExample.ts",
+                        "./demo/src/**/SymbolExample.ts",
+                        "./demo/src/**/CustomExtractorExample.ts"
+                    ],
                     //reference: "./demo/src/reference.ts",  // If specified, generate this file that you can use for your reference management
-                    out: './demo/src/BasicExample.js',
+                    out: './demo/src/resources/Examples.js',
                     options: {                         // use to override the default options, http://gruntjs.com/configuring-tasks#options
                         target: 'es5',                 // 'es3' (default) | 'es5'
                         module: 'commonjs',            // 'amd' (default) | 'commonjs'
-                        sourceMap: true,               // true (default) | false
+                        sourceMap: false,               // true (default) | false
                         declaration: false,            // true | false (default)
                         removeComments: true,           // true (default) | false
                         fast: "never",
@@ -74,7 +78,8 @@ module.exports = function (grunt) {
                 js: {
                     files: {
                         './dist/ts-embed.min.js': ['./dist/ts-embed.js'],
-                        './demo/js/ts-embed.min.js':['./dist/ts-embed.js']
+                        './demo/js/ts-embed.min.js':['./dist/ts-embed.js'],
+                        './demo/js/ts-embed-polyfills.min.js':['./dist/ts-embed-polyfills.js']
                     }
                 }
             },
@@ -167,8 +172,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask("default", ["ts:build","watch"]);
     grunt.registerTask("doc", ["ts:build","copy:doc","replace:doc","typedoc:release","clean:doc"]);
-    grunt.registerTask("demo", ["copy:definitions","replace:definitions","ts:demo","ts:basicExample","embed:demo"]);
+    grunt.registerTask("demo", ["copy:definitions","replace:definitions","ts:demo","ts:examples","embed:demo"]);
     grunt.registerTask("compile", ["ts:build","uglify:js"]);
-    grunt.registerTask("build", ["compile","demo","doc"]);
+    grunt.registerTask("build", ["compile","demo","doc","browser-badge"]);
 
 }

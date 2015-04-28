@@ -1,4 +1,4 @@
-///<reference path="reference.ts"/>
+///<reference path="typings/es6-promise/es6-promise.d.ts"/>
 var tsembed;
 (function (tsembed) {
     /**
@@ -532,8 +532,3 @@ var tsembed;
         };
     }
 })(tsembed || (tsembed = {}));
-/// <reference path="typings/es6-promise/es6-promise.d.ts" />
-//grunt-start
-//grunt-end
-/// <reference path="ts-embed.ts" /> 
-//# sourceMappingURL=ts-embed.js.map

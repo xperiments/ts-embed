@@ -14,23 +14,10 @@ class BasicExample{
 
 	// html file
 	@embed({src:'./resources/html5template.html'})
-		html5template:string;
-
-
-	 //png file as HTMLImageElement
-	@embed({src:'./resources/pngImage.png', as:EmbedType.objectURL })
-	 pngImage:string;
-
-	// png file as HTMLImageElement
-	@embed({src:'./resources/bootstrap.min.css' })
-		bootstrap:string;
-
+	html5template:string;
 
 	constructor() {
-
-		document.body.appendChild(EmbedUtils.imageFromObjectURL(this.pngImage));
-		document.body.appendChild(EmbedUtils.imageFromObjectURL(this.pngImage));
-		document.body.appendChild(EmbedUtils.imageFromObjectURL(this.pngImage));
+		console.log( this.html5template );
 	}
 
 }
